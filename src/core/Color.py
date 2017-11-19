@@ -37,7 +37,7 @@ class Color:
 		return colorsys.rgb_to_hsv(self.r, self.g, self.b)
 
 	def toRGB32(self):
-		return (self.r*255,self.g*255,self.b*255,self.a*100)
+		return (int(self.r*255),int(self.g*255),int(self.b*255),int(self.a*100))
 
 	def __str__(self):
 		return 'Color:(%f, %f, %f, %f)'%(self.r,self.g,self.b,self.a)

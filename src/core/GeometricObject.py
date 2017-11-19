@@ -1,5 +1,5 @@
-from core.Vector import *
-from core.RayCaster import *
+from Vector import *
+from RayCaster import *
 import math
 
 class GeometricObject:
