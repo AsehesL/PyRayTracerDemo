@@ -1,4 +1,4 @@
-import Vector
+from core.Vector import *
 
 class Ray:
 	def __init__(self, origin, direction):
@@ -6,7 +6,9 @@ class Ray:
 		self.direction = direction
 
 class RayHitPoint:
+
 	def __init__(self):
-		pass
+		self.point = Vector3.zero
+		self.normal = Vector3.zero
 		
 		
