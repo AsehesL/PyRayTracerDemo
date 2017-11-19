@@ -1,0 +1,11 @@
+{
+	"Gemoetries":[
+		{
+			"type":"Sphere",
+			"params":{
+				"point":[0,0,40],
+				"radius":6
+			}
+		}
+	]
+}

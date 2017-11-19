@@ -53,3 +53,13 @@ class Sphere(GeometricObject):
 				hit.point = ray.origin+ray.direction*t
 				return True
 		return False
+
+	@staticmethod
+	def Create(params):
+		pos = Vector3(params["point"][0], params["point"][1], params["point"][2])
+		r = params["radius"]
+		return Sphere(pos, r)
+
+def createFromSceneFile(gtype, params):
+	createCmd = '%s.Create(%s)'%(gtype,params)
+	return eval(createCmd)
