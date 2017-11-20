@@ -30,7 +30,7 @@ class Scene:
 		except:
 			print('加载场景失败，检查路径是否正确：%s'%scenePath)
 			return
-		self.hit = Renderer()
+		self.renderer = Renderer()
 
 
 	def render(self):
@@ -39,10 +39,8 @@ class Scene:
  				x = self.pixelWidth*(i-0.5*(self.tex.width()-1))
  				y = self.pixelHeight*(j-0.5*(self.tex.height()-1))
  				ray = self.camera.screenPointToRay(Vector2(x,y))
- 				#print(str(ray))
+ 				self.renderer.reset()
  				for g in self.gemoetries:
- 					if g.hit(ray, self.hit, 0.000001):
+ 					if g.hit(ray, self.renderer, 0.000001):
  						self.tex.setPixel(i,j,self.color)
- 				#if self.sphere.hit(ray, self.hit, 0.000001):
- 				#	self.tex.setPixel(i,j, self.color)
 		self.tex.save("aass")

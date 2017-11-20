@@ -18,11 +18,20 @@ class Plane(GeometricObject):
 	def hit(self, ray, renderer, epsilon):
 		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
 		if t > epsilon:
+			if t > renderer.t:
+				return False
+			renderer.t = t
 			renderer.normal = self.normal
 			renderer.point = ray.origin + ray.direction * t
 			return True
 		else:
 			return False
+
+	@staticmethod
+	def create(params):
+		pos = Vector3(params["point"][0], params["point"][1], params["point"][2])
+		n = Vector3(params["normal"][0], params["normal"][1], params["normal"][2])
+		return Plane(pos, n)
 
 class Sphere(GeometricObject):
 	def __init__(self, point, radius):
@@ -43,13 +52,14 @@ class Sphere(GeometricObject):
 			denom = 2.0 * vala
 			t = (-valb-e)/denom
 
-			if t>epsilon:
+			if t>epsilon and t <= renderer.t:
+				renderer.t = t
 				renderer.normal = (tocenter+ray.direction*t)/self.radius
 				renderer.point = ray.origin+ray.direction*t
 				return True
 			
 			t = (-valb+e)/denom
-			if t>epsilon:
+			if t>epsilon and t <= renderer.t:
 				renderer.normal = (tocenter+ray.direction*t)/self.radius
 				renderer.point = ray.origin+ray.direction*t
 				return True
