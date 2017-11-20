@@ -1,9 +1,11 @@
-# from Scene import Scene
+from Vector import *
 
-# class Tracer:
-# 	def __init__(self):
-# 		pass
+class Ray:
+	def __init__(self, origin, direction):
+		self.origin = origin
+		self.direction = direction
 
-# 	def trace(self, scene):
-		
+	def __str__(self):
+		return "Origin:"+str(self.origin)+",Direction:"+str(self.direction)
+
 
