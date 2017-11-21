@@ -45,3 +45,4 @@ class Scene:
  				if r != None:
  					self.tex.setPixel(i,j,r)
 		self.tex.save("aass")
+		self.tex.show()
