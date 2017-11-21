@@ -1,15 +1,15 @@
 {
 	"Result":{
-		"width":500,
-		"height":330,
+		"width":575,
+		"height":335,
 		"pixelWidth":0.0010,
 		"pixelHeight":0.0010
 	},
 	"Camera":{
 		"params":{
-			"position":[-1.556,0.93,-1.395],
-			"forward":[-0.7,0.4,-0.6],
-			"up":[0.3,0.9,0.3],
+			"position":[-1.255,4.965,-0.137],
+			"forward":[-0.559,-0.507,0.656],
+			"up":[-0.329,0.862,0.386],
 			"near":0.3
 		}
 	},
@@ -17,7 +17,7 @@
 		{
 			"type":"Sphere",
 			"params":{
-				"point":[0,0,0],
+				"point":[-3.91183,3.228,1.81556],
 				"radius":0.5,
 				"shader":"shaders/test.shader",
 				"shader_params":{
@@ -28,11 +28,33 @@
 		{
 			"type":"Sphere",
 			"params":{
-				"point":[0.5,0,0.2],
+				"point":[-2.733,3.228,2.681],
 				"radius":0.5,
 				"shader":"shaders/test.shader",
 				"shader_params":{
 					"color":[0,1,0,1]
+				}
+			}
+		},
+		{
+			"type":"Sphere",
+			"params":{
+				"point":[-2.633,3.228,1.419],
+				"radius":0.5,
+				"shader":"shaders/test.shader",
+				"shader_params":{
+					"color":[0,0,1,1]
+				}
+			}
+		},
+		{
+			"type":"Plane",
+			"params":{
+				"point":[-3.5837,2.3143,2.3361],
+				"normal":[0,1,0],
+				"shader":"shaders/test.shader",
+				"shader_params":{
+					"color":[1,1,0,1]
 				}
 			}
 		}

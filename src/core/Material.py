@@ -4,7 +4,7 @@ from Color import *
 
 def generateShader(scriptContent):
 	head = 'from Vector import *\nfrom Color import Color\nimport math\n'
-	entry = '\nmain(hit, scene, output)'
+	entry = '\nmain(hit, scene, reflcol, output)'
 	return head + scriptContent + entry 
 
 class Material:
@@ -29,11 +29,12 @@ class Material:
 			return self.params[key]
 		return None
 
-	def render(self, hit, scene):
+	def render(self, hit, scene, reflcol):
 		if self.shader == None:
 			return Color.error
 		self.params['hit'] = hit
 		self.params['scene'] = scene
+		self.params['reflcol'] = reflcol
 		self.params['output'] = {}
 		exec(self.shader, self.params)
 		if 'result' in self.params['output']:

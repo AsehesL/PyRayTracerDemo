@@ -16,39 +16,63 @@ class Ray:
 
 class RayTracingHit:
 	def __init__(self):
-		self.t = sys.float_info.max
 		self.point = Vector3.zero
 		self.normal = Vector3.zero
+		self.material = None
+		self.t = sys.float_info.max
 
 	def reset(self):
 		self.t = sys.float_info.max
 
 class Tracer:
-	def __init__(self):
-		pass
+	def __init__(self, tracingTimes):
+		self.tracingTimes = tracingTimes
 
 	def pushObj(self, obj):
 		pass
 
-	def trace(self, ray, hit, scene, epsilon):
+	def trace(self, ray, scene, epsilon):
 		pass
 
 
 class SimpleTracer(Tracer):
-	def __init__(self):
-		Tracer.__init__(self)
+	def __init__(self, tracingTimes):
+		Tracer.__init__(self, tracingTimes)
 		self.gemoetries = []
 
 	def pushObj(self, obj):
 		self.gemoetries.append(obj)
 
-	def trace(self, ray, hit, scene, epsilon):
+	def trace(self, ray, scene, epsilon):
+		return SimpleTracer.__traceRecursion(self, ray, scene, epsilon, 0)
+		# hit.reset()
+		# result = None
+		# for g in self.gemoetries:
+		# 	if g.hit(ray, hit, epsilon):
+		# 		result = g.material.render(hit, scene)
+		# return result
+
+	def __traceRecursion(self, ray, scene, epsilon, n):
+		hit = RayTracingHit()
+		if SimpleTracer.__trace(self, ray, hit, epsilon):
+			if n == self.tracingTimes and hit.material != None:
+				return hit.material.render(hit, scene, None)
+			elif hit.material != None:
+				reflDir = Vector3.reflect(ray.direction, hit.normal).getNormalized()
+				newRay = Ray(hit.point, reflDir)
+				reflCol = SimpleTracer.__traceRecursion(self, newRay, scene, epsilon, n+1)
+				return hit.material.render(hit, scene, reflCol)
+		return None
+
+	def __trace(self, ray, hit, epsilon):
 		hit.reset()
-		result = None
+		result = False
 		for g in self.gemoetries:
 			if g.hit(ray, hit, epsilon):
-				result = g.material.render(hit, scene)
+				hit.material = g.material
+				result = True
 		return result
+
 
 
 

@@ -13,7 +13,7 @@ class Camera:
 		self.position = position
 
 	def screenPointToRay(self, point):
-		d = self.r*point.x + self.u*point.y - self.f * self.near
+		d = self.r*point.x + self.u*point.y + self.f * self.near
 		return Ray(self.position, d.getNormalized())
 
 	@staticmethod
