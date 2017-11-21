@@ -1,7 +1,9 @@
 from Vector import *
 from Tracer import *
 from Material import Material
+import Res
 import math
+import os.path
 
 class GeometricObject:
 	def __init__(self, shader, point):
@@ -75,5 +77,12 @@ class Sphere(GeometricObject):
 		return Sphere(s, pos, r)
 
 def createFromSceneFile(gtype, params):
+	if 'shader' in params:
+		params['shader'] = Res.combineResPath(params['shader'])
+
 	createCmd = '%s.create(%s)'%(gtype,params)
-	return eval(createCmd)
+	go = eval(createCmd)
+	if 'shader_params' in params:
+		for p in params["shader_params"]:
+			go.material.setParam(p, params["shader_params"][p])
+	return go

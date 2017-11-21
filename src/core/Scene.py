@@ -45,8 +45,4 @@ class Scene:
  				r = self.tracer.trace(ray, self.hit, self, 0.000001)
  				if r != None:
  					self.tex.setPixel(i,j,r)
- 				# self.hit.reset()
- 				# for g in self.gemoetries:
- 				# 	if g.hit(ray, self.hit, 0.000001):
- 				# 		self.tex.setPixel(i,j,self.color)
 		self.tex.save("aass")

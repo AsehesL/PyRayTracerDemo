@@ -19,7 +19,21 @@
 			"params":{
 				"point":[0,0,0],
 				"radius":0.5,
-				"shader":""
+				"shader":"shaders/test.shader",
+				"shader_params":{
+					"color":[1,0,0,1]
+				}
+			}
+		},
+		{
+			"type":"Sphere",
+			"params":{
+				"point":[0.5,0,0.2],
+				"radius":0.5,
+				"shader":"shaders/test.shader",
+				"shader_params":{
+					"color":[0,1,0,1]
+				}
 			}
 		}
 	]
