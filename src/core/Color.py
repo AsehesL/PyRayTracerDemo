@@ -1,4 +1,5 @@
 import colorsys
+import math
 
 class Color:
 	def __init__(self, r, g, b, a=1.0):
@@ -46,6 +47,8 @@ class Color:
 		return 'Color(%s, %s, %s, %s)'%(repr(self.r),repr(self.g),repr(self.b),repr(self.a))
 
 	def __eq__(self, other):
+		if other == None:
+			return False
 		return math.isclose(self.r, other.r) and math.isclose(self.g, other.g) and math.isclose(self.b, other.b) and math.isclose(self.a, other.a)
 
 	def __add__(self, other):

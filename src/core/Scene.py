@@ -1,25 +1,27 @@
 import json
+import os.path
 
 from Texture import Texture
 from GeometricObject import *
 from Tracer import *
 from Vector import *
 from Color import Color
-from Renderer import *
 from Camera import Camera
 
 class Scene:
 	def __init__(self):
 		self.color = Color(1,0,0)
-		self.gemoetries = []
+		self.tracer = SimpleTracer()
 
 	def initScene(self, scenePath):
+		if os.path.exists(scenePath) == False:
+			return False
 		try:
 			file = open(scenePath)
 			scenejson = json.load(file)
 			file.close()
 			for g in scenejson["Gemoetries"]:
-				self.gemoetries.append(createFromSceneFile(g["type"],g["params"]))
+				self.tracer.pushObj(createFromSceneFile(g["type"],g["params"]))
 			camPamras = scenejson["Camera"]
 			self.camera = Camera.create(camPamras["params"])
 			cfg = scenejson["Result"]
@@ -28,9 +30,10 @@ class Scene:
 			self.pixelHeight = cfg["pixelHeight"]
 			
 		except:
-			print('加载场景失败，检查路径是否正确：%s'%scenePath)
-			return
-		self.renderer = Renderer()
+			print('加载场景失败，请检查文件：%s'%scenePath)
+			return False
+		self.hit = RayTracingHit()
+		return True
 
 
 	def render(self):
@@ -39,8 +42,11 @@ class Scene:
  				x = self.pixelWidth*(i-0.5*(self.tex.width()-1))
  				y = self.pixelHeight*(j-0.5*(self.tex.height()-1))
  				ray = self.camera.screenPointToRay(Vector2(x,y))
- 				self.renderer.reset()
- 				for g in self.gemoetries:
- 					if g.hit(ray, self.renderer, 0.000001):
- 						self.tex.setPixel(i,j,self.color)
+ 				r = self.tracer.trace(ray, self.hit, self, 0.000001)
+ 				if r != None:
+ 					self.tex.setPixel(i,j,r)
+ 				# self.hit.reset()
+ 				# for g in self.gemoetries:
+ 				# 	if g.hit(ray, self.hit, 0.000001):
+ 				# 		self.tex.setPixel(i,j,self.color)
 		self.tex.save("aass")

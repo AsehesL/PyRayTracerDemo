@@ -1,28 +1,29 @@
 from Vector import *
 from Tracer import *
-from Renderer import *
+from Material import Material
 import math
 
 class GeometricObject:
-	def __init__(self, point):
+	def __init__(self, shader, point):
 		self.point = point
+		self.material = Material(shader)
 
-	def hit(self, ray, renderer, epsilon):
+	def hit(self, ray, hit, epsilon):
 		pass
 
 class Plane(GeometricObject):
-	def __init__(self, point, normal):
-		GeometricObject.__init__(self, point)
+	def __init__(self, shader, point, normal):
+		GeometricObject.__init__(self, shader, point)
 		self.normal = normal
 
-	def hit(self, ray, renderer, epsilon):
+	def hit(self, ray, hit, epsilon):
 		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
 		if t > epsilon:
-			if t > renderer.t:
+			if t > hit.t:
 				return False
-			renderer.t = t
-			renderer.normal = self.normal
-			renderer.point = ray.origin + ray.direction * t
+			hit.t = t
+			hit.normal = self.normal
+			hit.point = ray.origin + ray.direction * t
 			return True
 		else:
 			return False
@@ -31,14 +32,15 @@ class Plane(GeometricObject):
 	def create(params):
 		pos = Vector3(params["point"][0], params["point"][1], params["point"][2])
 		n = Vector3(params["normal"][0], params["normal"][1], params["normal"][2])
-		return Plane(pos, n)
+		s = params["shader"]
+		return Plane(s, pos, n)
 
 class Sphere(GeometricObject):
-	def __init__(self, point, radius):
-		GeometricObject.__init__(self, point)
+	def __init__(self, shader, point, radius):
+		GeometricObject.__init__(self, shader, point)
 		self.radius = radius
 
-	def hit(self, ray, renderer, epsilon):
+	def hit(self, ray, hit, epsilon):
 		tocenter = ray.origin - self.point
 		vala = Vector3.dot(ray.direction, ray.direction)
 		valb = Vector3.dot(tocenter, ray.direction) * 2.0
@@ -52,16 +54,16 @@ class Sphere(GeometricObject):
 			denom = 2.0 * vala
 			t = (-valb-e)/denom
 
-			if t>epsilon and t <= renderer.t:
-				renderer.t = t
-				renderer.normal = (tocenter+ray.direction*t)/self.radius
-				renderer.point = ray.origin+ray.direction*t
+			if t>epsilon and t <= hit.t:
+				hit.t = t
+				hit.normal = (tocenter+ray.direction*t)/self.radius
+				hit.point = ray.origin+ray.direction*t
 				return True
 			
 			t = (-valb+e)/denom
-			if t>epsilon and t <= renderer.t:
-				renderer.normal = (tocenter+ray.direction*t)/self.radius
-				renderer.point = ray.origin+ray.direction*t
+			if t>epsilon and t <= hit.t:
+				hit.normal = (tocenter+ray.direction*t)/self.radius
+				hit.point = ray.origin+ray.direction*t
 				return True
 		return False
 
@@ -69,7 +71,8 @@ class Sphere(GeometricObject):
 	def create(params):
 		pos = Vector3(params["point"][0], params["point"][1], params["point"][2])
 		r = params["radius"]
-		return Sphere(pos, r)
+		s = params["shader"]
+		return Sphere(s, pos, r)
 
 def createFromSceneFile(gtype, params):
 	createCmd = '%s.create(%s)'%(gtype,params)

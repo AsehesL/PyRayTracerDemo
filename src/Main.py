@@ -6,7 +6,7 @@ from Scene import Scene
 
 if __name__ == "__main__":
 	scene = Scene()
-	scene.initScene('../res/testscene1.json')
-	scene.render()
+	if scene.initScene('../res/testscene1.json') == True:
+		scene.render()
 
 
