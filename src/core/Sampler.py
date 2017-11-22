@@ -5,4 +5,5 @@ class Sampler:
 	def generateSamples():
 		pass
 
-	
+	def sampleUnitSquare():
+		pass
