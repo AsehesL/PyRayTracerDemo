@@ -17,6 +17,4 @@ class Texture:
 	def save(self, path):
 		self.pic.save("%s.png"%(path), "PNG")
 
-	def show(self):
-		self.pic.show()
 

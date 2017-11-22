@@ -1,24 +1,7 @@
 import math
 from Vector import Vector3
 from Tracer import Ray
-from Sampler import *
 from Texture import Texture
-from Sampler import *
-
-# class Screen:
-# 	def __init__(self, width, height, pixelWidth, pixelHeight):
-# 		self.__tex = Texture(width, height)
-# 		self.width = width
-# 		self.heigh = height
-# 		self.pixelWidth = pixelWidth
-# 		self.pixelHeight = pixelHeight
-
-# 	def setSampler(self, sampler):
-# 		self.sampler = sampler
-
-# 	def applySampler(self, x, y):
-# 		for i in range(0, self.sampler.numSamples):
-
 
 class Camera:
 	def __init__(self, position, forward, up, d):
