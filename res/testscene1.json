@@ -1,16 +1,18 @@
 {
 	"Result":{
 		"width":575,
-		"height":335,
-		"pixelWidth":0.0010,
-		"pixelHeight":0.0010
+		"height":335
 	},
 	"Camera":{
 		"params":{
 			"position":[-1.255,4.965,-0.137],
 			"forward":[-0.559,-0.507,0.656],
 			"up":[-0.329,0.862,0.386],
-			"near":0.3
+			"near":0.3,
+			"sampler":"RamdomSampler",
+			"num_samples":4,
+			"pixel_width":0.0010,
+			"pixel_height":0.0010
 		}
 	},
 	"Gemoetries":[

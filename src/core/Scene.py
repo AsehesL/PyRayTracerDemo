@@ -4,16 +4,13 @@ import os.path
 from Texture import Texture
 from GeometricObject import *
 from Tracer import *
-from Vector import *
 from Color import Color
-from Camera import Camera
-from Sampler import *
+from Camera import *
 
 class Scene:
 	def __init__(self):
 		self.color = Color(1,0,0)
 		self.tracer = SimpleTracer(1)
-		self.sampler = RamdomSampler(16)
 
 	def initScene(self, scenePath):
 		if os.path.exists(scenePath) == False:
@@ -25,11 +22,10 @@ class Scene:
 			for g in scenejson["Gemoetries"]:
 				self.tracer.pushObj(createFromSceneFile(g["type"],g["params"]))
 			camPamras = scenejson["Camera"]
-			self.camera = Camera.create(camPamras["params"])
+			self.camera = createCamera(camPamras["params"])
 			cfg = scenejson["Result"]
 			self.tex = Texture(cfg["width"], cfg["height"])
-			self.pixelWidth = cfg["pixelWidth"]
-			self.pixelHeight = cfg["pixelHeight"]
+			self.camera.setRenderTarget(self.tex)
 			
 		except:
 			print('加载场景失败，请检查文件：%s'%scenePath)
@@ -38,16 +34,5 @@ class Scene:
 
 
 	def render(self):
-		for j in range(0,self.tex.height()):
-			for i in range(0,self.tex.width()):
-				r = Color.black
-				for n in range(0,self.sampler.numSamples):
-					sp = self.sampler.sampleUnitSquare()
-					x = self.pixelWidth*(i-0.5*(self.tex.width())+sp.x)
-					y = self.pixelHeight*((self.tex.height()-1- j)-0.5*(self.tex.height())+sp.y)
-				
-					ray = self.camera.screenPointToRay(Vector2(x,y))
-					r += self.tracer.trace(ray, self, 0.000001)
-				if r != None:
-					self.tex.setPixel(i,j,r/self.sampler.numSamples)
+		self.camera.render(self)
 		self.tex.save("aass")
