@@ -33,6 +33,6 @@ class Scene:
 		return True
 
 
-	def render(self):
+	def render(self, outputPath):
 		self.camera.render(self)
-		self.tex.save("aass")
+		self.tex.save(outputPath)
