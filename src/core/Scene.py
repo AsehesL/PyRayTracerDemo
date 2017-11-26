@@ -12,7 +12,7 @@ class Scene:
 		self.color = Color(1,0,0)
 		self.tracer = SimpleTracer(1)
 
-	def initScene(self, scenePath):
+	def init_scene(self, scenePath):
 		if os.path.exists(scenePath) == False:
 			return False
 		try:
@@ -20,12 +20,12 @@ class Scene:
 			scenejson = json.load(file)
 			file.close()
 			for g in scenejson["Gemoetries"]:
-				self.tracer.pushObj(createFromSceneFile(g["type"],g["params"]))
+				self.tracer.push_obj(create_from_scene_file(g["type"],g["params"]))
 			camPamras = scenejson["Camera"]
-			self.camera = createCamera(camPamras["params"])
+			self.camera = create_camera(camPamras["params"])
 			cfg = scenejson["Result"]
 			self.tex = Texture(cfg["width"], cfg["height"])
-			self.camera.setRenderTarget(self.tex)
+			self.camera.set_render_target(self.tex)
 			
 		except:
 			print('加载场景失败，请检查文件：%s'%scenePath)

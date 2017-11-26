@@ -25,7 +25,7 @@ class Vector2:
 		'''计算二维向量的模长'''
 		return math.sqrt(self.x*self.x+self.y*self.y)
 
-	def sqrMagnitude(self):
+	def sqr_magnitude(self):
 		'''计算二维向量模长的平方'''
 		return self.x*self.x+self.y*self.y
 
@@ -39,7 +39,7 @@ class Vector2:
 			self.x = 0
 			self.y = 0
 
-	def getNormalized(self):
+	def get_normalized(self):
 		vccopy = Vector2(self.x,self.y)
 		vccopy.normalize()
 		return vccopy
@@ -85,7 +85,7 @@ class Vector2:
 
 	@staticmethod
 	def angle(fromvec, tovec):
-		v = Vector2.dot(fromvec.getNormalized(), tovec.getNormalized())
+		v = Vector2.dot(fromvec.get_normalized(), tovec.get_normalized())
 		if v < -1:
 			v = -1
 		elif v > 1:
@@ -137,7 +137,7 @@ class Vector3:
 		'''计算三维向量的模长'''
 		return math.sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
 
-	def sqrMagnitude(self):
+	def sqr_magnitude(self):
 		'''计算三维向量模长的平方'''
 		return self.x*self.x+self.y*self.y+self.z*self.z
 
@@ -153,7 +153,7 @@ class Vector3:
 			self.y = 0
 			self.z = 0
 
-	def getNormalized(self):
+	def get_normalized(self):
 		vccopy = Vector3(self.x,self.y, self.z)
 		vccopy.normalize()
 		return vccopy
@@ -206,7 +206,7 @@ class Vector3:
 
 	@staticmethod
 	def angle(fromvec, tovec):
-		v = Vector3.dot(fromvec.getNormalized(), tovec.getNormalized())
+		v = Vector3.dot(fromvec.get_normalized(), tovec.get_normalized())
 		if v < -1:
 			v = -1
 		elif v > 1:

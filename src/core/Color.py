@@ -34,10 +34,10 @@ class Color:
 	def grayscale(self):
 		return 0.299*self.r+0.587*self.g+0.114*self.b
 
-	def toHSV(self):
+	def to_hsv(self):
 		return colorsys.rgb_to_hsv(self.r, self.g, self.b)
 
-	def toRGB32(self):
+	def to_rgb32(self):
 		return (int(self.r*255),int(self.g*255),int(self.b*255),int(self.a*100))
 
 	def __str__(self):
@@ -78,7 +78,7 @@ class Color:
 		return Color(a.r+(b.r-a.r)*t, a.g+(b.g-a.g)*t, a.b+(b.b-a.b)*t, a.a+(b.a-a.a)*t)
 
 	@staticmethod
-	def HSVtoRGB(h, s, v, a=1.0):
+	def hsv_to_rgb(h, s, v, a=1.0):
 		hv = h/360.0
 		rgb = colorsys.hsv_to_rgb(hv,s,v)
 		return Color(rgb[0],rgb[1],rgb[2],a)

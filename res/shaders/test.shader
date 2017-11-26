@@ -1,7 +1,7 @@
 
 def main(hit, scene, reflcol, output):
 	nor = hit.normal
-	ndl = max(0, Vector3.dot(nor.getNormalized(), Vector3(0.321,0.766,-0.557).getNormalized()))
+	ndl = max(0, Vector3.dot(nor.get_normalized(), Vector3(0.321,0.766,-0.557).get_normalized()))
 
 	col = Color(color[0],color[1],color[2],color[3])
 

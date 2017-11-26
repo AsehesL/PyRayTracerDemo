@@ -76,13 +76,13 @@ class Sphere(GeometricObject):
 		s = params["shader"]
 		return Sphere(s, pos, r)
 
-def createFromSceneFile(gtype, params):
+def create_from_scene_file(gtype, params):
 	if 'shader' in params:
-		params['shader'] = Res.combineResPath(params['shader'])
+		params['shader'] = Res.combine_res_path(params['shader'])
 
 	createCmd = '%s.create(%s)'%(gtype,params)
 	go = eval(createCmd)
 	if 'shader_params' in params:
 		for p in params["shader_params"]:
-			go.material.setParam(p, params["shader_params"][p])
+			go.material.set_param(p, params["shader_params"][p])
 	return go

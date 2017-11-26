@@ -7,7 +7,7 @@ class Sampler:
 		self.numSamples = numSamples
 		self.index = 0
 
-	def sampleUnitSquare(self):
+	def sample_unit_square(self):
 		pass
 
 class RamdomSampler(Sampler):
@@ -18,8 +18,8 @@ class RamdomSampler(Sampler):
 			sp = Vector2(random.random(), random.random())
 			self.__samples.append(sp)
 
-	def sampleUnitSquare(self):
-		Sampler.sampleUnitSquare(self)
+	def sample_unit_square(self):
+		Sampler.sample_unit_square(self)
 		s = self.__samples[int(self.index%len(self.__samples))]
 		self.index += 1
 		return s

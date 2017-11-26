@@ -11,8 +11,8 @@ class Texture:
 	def height(self):
 		return self.pic.height
 
-	def setPixel(self, x,y,color):
-		self.pic.putpixel((x,y), color.toRGB32())
+	def set_pixel(self, x,y,color):
+		self.pic.putpixel((x,y), color.to_rgb32())
 
 	def save(self, path):
 		self.pic.save("%s.png"%(path), "PNG")

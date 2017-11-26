@@ -18,13 +18,13 @@ class Material:
 			self.shader = None
 		self.params = {}
 
-	def setParam(self, key, value):
+	def set_param(self, key, value):
 		self.params[key] = value
 
-	def setParams(self, params):
+	def set_params(self, params):
 		self.params = params
 
-	def getParams(self, key):
+	def get_param(self, key):
 		if key in self.params:
 			return self.params[key]
 		return None

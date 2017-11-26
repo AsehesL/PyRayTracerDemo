@@ -28,7 +28,7 @@ class Tracer:
 	def __init__(self, tracingTimes):
 		self.tracingTimes = tracingTimes
 
-	def pushObj(self, obj):
+	def push_obj(self, obj):
 		pass
 
 	def trace(self, ray, scene, epsilon):
@@ -40,11 +40,11 @@ class SimpleTracer(Tracer):
 		Tracer.__init__(self, tracingTimes)
 		self.gemoetries = []
 
-	def pushObj(self, obj):
+	def push_obj(self, obj):
 		self.gemoetries.append(obj)
 
 	def trace(self, ray, scene, epsilon):
-		return SimpleTracer.__traceRecursion(self, ray, scene, epsilon, 0)
+		return SimpleTracer.__trace_recursion(self, ray, scene, epsilon, 0)
 		# hit.reset()
 		# result = None
 		# for g in self.gemoetries:
@@ -52,15 +52,15 @@ class SimpleTracer(Tracer):
 		# 		result = g.material.render(hit, scene)
 		# return result
 
-	def __traceRecursion(self, ray, scene, epsilon, n):
+	def __trace_recursion(self, ray, scene, epsilon, n):
 		hit = RayTracingHit()
 		if SimpleTracer.__trace(self, ray, hit, epsilon):
 			if n == self.tracingTimes and hit.material != None:
 				return hit.material.render(hit, scene, None)
 			elif hit.material != None:
-				reflDir = Vector3.reflect(ray.direction, hit.normal).getNormalized()
+				reflDir = Vector3.reflect(ray.direction, hit.normal).get_normalized()
 				newRay = Ray(hit.point, reflDir)
-				reflCol = SimpleTracer.__traceRecursion(self, newRay, scene, epsilon, n+1)
+				reflCol = SimpleTracer.__trace_recursion(self, newRay, scene, epsilon, n+1)
 				return hit.material.render(hit, scene, reflCol)
 		return None
 
