@@ -27,8 +27,11 @@ class Camera:
 	def set_render_target(self, target):
 		self.target = target
 
-	def render(self, scene):
+	def render(self, scene, callback):
 		for j in range(0,self.target.height()):
+			progress = j/(self.target.height()-1)
+			if callback != None:
+				callback(progress)
 			for i in range(0,self.target.width()):
 				r = Color.black
 				for n in range(0,self.sampler.numSamples):

@@ -29,7 +29,7 @@ class Material:
 			return self.params[key]
 		return None
 
-	def render(self, hit, scene, reflcol):
+	def shade(self, hit, scene, reflcol):
 		if self.shader == None:
 			return Color.error
 		self.params['hit'] = hit

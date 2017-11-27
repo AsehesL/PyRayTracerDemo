@@ -49,19 +49,19 @@ class SimpleTracer(Tracer):
 		# result = None
 		# for g in self.gemoetries:
 		# 	if g.hit(ray, hit, epsilon):
-		# 		result = g.material.render(hit, scene)
+		# 		result = g.material.shade(hit, scene)
 		# return result
 
 	def __trace_recursion(self, ray, scene, epsilon, n):
 		hit = RayTracingHit()
 		if SimpleTracer.__trace(self, ray, hit, epsilon):
 			if n == self.tracingTimes and hit.material != None:
-				return hit.material.render(hit, scene, None)
+				return hit.material.shade(hit, scene, None)
 			elif hit.material != None:
 				reflDir = Vector3.reflect(ray.direction, hit.normal).get_normalized()
 				newRay = Ray(hit.point, reflDir)
 				reflCol = SimpleTracer.__trace_recursion(self, newRay, scene, epsilon, n+1)
-				return hit.material.render(hit, scene, reflCol)
+				return hit.material.shade(hit, scene, reflCol)
 		return None
 
 	def __trace(self, ray, hit, epsilon):

@@ -7,6 +7,9 @@ from Tracer import *
 from Color import Color
 from Camera import *
 
+def log_progress(progress):
+	print('当前渲染进度：%d%%'%(int(progress*100))) 
+
 class Scene:
 	def __init__(self):
 		self.color = Color(1,0,0)
@@ -34,5 +37,9 @@ class Scene:
 
 
 	def render(self, outputPath):
-		self.camera.render(self)
+		print("开始渲染")
+		self.camera.render(self, log_progress)
+		print("渲染结束")
 		self.tex.save(outputPath)
+
+	
