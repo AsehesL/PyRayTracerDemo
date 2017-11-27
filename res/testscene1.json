@@ -15,6 +15,17 @@
 			"pixel_height":0.0010
 		}
 	},
+	"Lights":[
+		{
+			"type":"DirectionalLight",
+			"params":{
+				"color":[1,1,1,1],
+				"ls":1,
+				"direction":[0.321,0.766,-0.557],
+				"shadow":1
+			}
+		}
+	],
 	"Gemoetries":[
 		{
 			"type":"Sphere",

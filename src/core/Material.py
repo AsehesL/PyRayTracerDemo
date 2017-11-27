@@ -2,7 +2,7 @@ import os.path
 
 from Color import *
 
-def generateShader(scriptContent):
+def generate_shader(scriptContent):
 	head = 'from Vector import *\nfrom Color import Color\nimport math\n'
 	entry = '\nmain(hit, scene, reflcol, output)'
 	return head + scriptContent + entry 
@@ -13,7 +13,7 @@ class Material:
 			file = open(shader)
 			shaderScript = file.read()
 			file.close()
-			self.shader = generateShader(shaderScript)
+			self.shader = generate_shader(shaderScript)
 		else:
 			self.shader = None
 		self.params = {}

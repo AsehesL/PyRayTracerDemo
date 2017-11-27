@@ -6,6 +6,7 @@ from GeometricObject import *
 from Tracer import *
 from Color import Color
 from Camera import *
+from Light import *
 
 def log_progress(progress):
 	print('当前渲染进度：%d%%'%(int(progress*100))) 
@@ -13,6 +14,7 @@ def log_progress(progress):
 class Scene:
 	def __init__(self):
 		self.color = Color(1,0,0)
+		self.lights = []
 		self.tracer = SimpleTracer(1)
 
 	def init_scene(self, scenePath):
@@ -24,6 +26,8 @@ class Scene:
 			file.close()
 			for g in scenejson["Gemoetries"]:
 				self.tracer.push_obj(create_from_scene_file(g["type"],g["params"]))
+			for l in scenejson["Lights"]:
+				self.lights.append(create_light(l["type"], l["params"]))
 			camPamras = scenejson["Camera"]
 			self.camera = create_camera(camPamras["params"])
 			cfg = scenejson["Result"]
