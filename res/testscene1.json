@@ -3,6 +3,9 @@
 		"width":575,
 		"height":335
 	},
+	"Tracer":{
+		"max_trace":0
+	},
 	"Camera":{
 		"params":{
 			"position":[-1.255,4.965,-0.137],

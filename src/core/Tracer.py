@@ -74,5 +74,7 @@ class SimpleTracer(Tracer):
 		return result
 
 
+def create_tracer(params):
+	return SimpleTracer(params["max_trace"])
 
 
