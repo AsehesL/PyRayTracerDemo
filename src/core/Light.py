@@ -30,7 +30,7 @@ class PointLight(Light):
 		ls = params['ls']
 		pos = Vector3(params['position'][0],params['position'][1],params['position'][2])
 		col = Color(params['color'][0], params['color'][1], params['color'][2], params['color'][3])
-		return PointLight(ls, col)
+		return PointLight(pos, ls, col)
 
 class DirectionalLight(Light):
 	def __init__(self, direction, ls, color):
@@ -50,7 +50,7 @@ class DirectionalLight(Light):
 		ls = params['ls']
 		d = Vector3(params['direction'][0],params['direction'][1],params['direction'][2])
 		col = Color(params['color'][0], params['color'][1], params['color'][2], params['color'][3])
-		return DirectionalLight(ls, col)
+		return DirectionalLight(d, ls, col)
 
 class Ambient(Light):
 	def __init__(self, ls, color):

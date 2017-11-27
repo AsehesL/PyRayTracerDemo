@@ -8,8 +8,14 @@ from Color import Color
 from Camera import *
 from Light import *
 
+current_progress = -1
+
 def log_progress(progress):
-	print('当前渲染进度：%d%%'%(int(progress*100))) 
+	pgs = int(progress*100)
+	if pgs == current_progress:
+		return
+	current_progress = pgs
+	print('当前渲染进度：%d%%'%(current_progress)) 
 
 class Scene:
 	def __init__(self):
@@ -27,7 +33,10 @@ class Scene:
 			for g in scenejson["Gemoetries"]:
 				self.tracer.push_obj(create_from_scene_file(g["type"],g["params"]))
 			for l in scenejson["Lights"]:
-				self.lights.append(create_light(l["type"], l["params"]))
+				if l["type"] == "Ambient":
+					self.ambient = create_light(l["type"], l["params"])
+				else:
+					self.lights.append(create_light(l["type"], l["params"]))
 			camPamras = scenejson["Camera"]
 			self.camera = create_camera(camPamras["params"])
 			cfg = scenejson["Result"]

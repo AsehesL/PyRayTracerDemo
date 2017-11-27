@@ -17,6 +17,13 @@
 	},
 	"Lights":[
 		{
+			"type":"Ambient",
+			"params":{
+				"color":[1,1,1,1],
+				"ls":1
+			}
+		},
+		{
 			"type":"DirectionalLight",
 			"params":{
 				"color":[1,1,1,1],
@@ -32,7 +39,7 @@
 			"params":{
 				"point":[-3.91183,3.228,1.81556],
 				"radius":0.5,
-				"shader":"shaders/test.shader",
+				"shader":"shaders/test.shader.py",
 				"shader_params":{
 					"color":[1,0,0,1]
 				}
@@ -43,7 +50,7 @@
 			"params":{
 				"point":[-2.733,3.228,2.681],
 				"radius":0.5,
-				"shader":"shaders/test.shader",
+				"shader":"shaders/test.shader.py",
 				"shader_params":{
 					"color":[0,1,0,1]
 				}
@@ -54,7 +61,7 @@
 			"params":{
 				"point":[-2.633,3.228,1.419],
 				"radius":0.5,
-				"shader":"shaders/test.shader",
+				"shader":"shaders/test.shader.py",
 				"shader_params":{
 					"color":[0,0,1,1]
 				}
@@ -65,7 +72,7 @@
 			"params":{
 				"point":[-3.5837,2.3143,2.3361],
 				"normal":[0,1,0],
-				"shader":"shaders/test.shader",
+				"shader":"shaders/test.shader.py",
 				"shader_params":{
 					"color":[1,1,0,1]
 				}
