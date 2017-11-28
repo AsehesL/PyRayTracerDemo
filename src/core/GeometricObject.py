@@ -13,6 +13,9 @@ class GeometricObject:
 	def hit(self, ray, hit, epsilon):
 		pass
 
+	def shadowhit(self, ray, shadowhit, epsilon):
+		pass
+
 class Plane(GeometricObject):
 	def __init__(self, shader, point, normal):
 		GeometricObject.__init__(self, shader, point)
@@ -26,6 +29,16 @@ class Plane(GeometricObject):
 			hit.t = t
 			hit.normal = self.normal
 			hit.point = ray.origin + ray.direction * t
+			return True
+		else:
+			return False
+
+	def shadowhit(self, ray, shadowhit, epsilon):
+		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
+		if t > epsilon:
+			if t > shadowhit.t:
+				return False
+			shadowhit.t = t
 			return True
 		else:
 			return False
@@ -64,8 +77,33 @@ class Sphere(GeometricObject):
 			
 			t = (-valb+e)/denom
 			if t>epsilon and t <= hit.t:
+				hit.t = t
 				hit.normal = (tocenter+ray.direction*t)/self.radius
 				hit.point = ray.origin+ray.direction*t
+				return True
+		return False
+
+	def shadowhit(self, ray, shadowhit, epsilon):
+		tocenter = ray.origin - self.point
+		vala = Vector3.dot(ray.direction, ray.direction)
+		valb = Vector3.dot(tocenter, ray.direction) * 2.0
+		valc = Vector3.dot(tocenter, tocenter)-self.radius*self.radius
+		dis = valb*valb-4.0*vala*valc
+
+		if dis < 0.0:
+			return False
+		else:
+			e = math.sqrt(dis)
+			denom = 2.0 * vala
+			t = (-valb-e)/denom
+
+			if t>epsilon and t <= shadowhit.t:
+				shadowhit.t = t
+				return True
+			
+			t = (-valb+e)/denom
+			if t>epsilon and t <= shadowhit.t:
+				shadowhit.t = t
 				return True
 		return False
 

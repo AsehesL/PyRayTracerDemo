@@ -3,7 +3,7 @@ import os.path
 from Color import *
 
 def generate_shader(scriptContent):
-	head = 'from Vector import *\nfrom Color import Color\nimport math\n'
+	head = 'from Vector import *\nfrom Color import Color\nimport math\nfrom Light import *\nfrom Scene import *\nfrom Tracer import *\n'
 	entry = '\nmain(hit, scene, reflcol, output)'
 	return head + scriptContent + entry 
 

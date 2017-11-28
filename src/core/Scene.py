@@ -19,8 +19,10 @@ class Scene:
 
 	def init_scene(self, scenePath):
 		if os.path.exists(scenePath) == False:
+			print("场景文件不存在：%s"%scenePath)
 			return False
 		try:
+			print("开始初始化场景")
 			file = open(scenePath)
 			scenejson = json.load(file)
 			file.close()
@@ -41,6 +43,7 @@ class Scene:
 		except:
 			print('加载场景失败，请检查文件：%s'%scenePath)
 			return False
+		print("初始化场景完毕！")
 		return True
 
 

@@ -13,7 +13,7 @@
 			"up":[-0.329,0.862,0.386],
 			"near":0.3,
 			"sampler":"RamdomSampler",
-			"num_samples":4,
+			"num_samples":2,
 			"pixel_width":0.0010,
 			"pixel_height":0.0010
 		}
@@ -22,8 +22,8 @@
 		{
 			"type":"Ambient",
 			"params":{
-				"color":[1,1,1,1],
-				"ls":1
+				"color":[0.3,0.356,0.39,1],
+				"ls":0.3
 			}
 		},
 		{
@@ -42,9 +42,12 @@
 			"params":{
 				"point":[-3.91183,3.228,1.81556],
 				"radius":0.5,
-				"shader":"shaders/test.shader.py",
+				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
-					"color":[1,0,0,1]
+					"am_color":[1,1,1,1],
+					"am_k":1,
+					"dif_color":[1,0,0,1],
+					"dif_k":2.3
 				}
 			}
 		},
@@ -53,9 +56,12 @@
 			"params":{
 				"point":[-2.733,3.228,2.681],
 				"radius":0.5,
-				"shader":"shaders/test.shader.py",
+				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
-					"color":[0,1,0,1]
+					"am_color":[1,1,1,1],
+					"am_k":1,
+					"dif_color":[0,1,0,1],
+					"dif_k":2.3
 				}
 			}
 		},
@@ -64,9 +70,12 @@
 			"params":{
 				"point":[-2.633,3.228,1.419],
 				"radius":0.5,
-				"shader":"shaders/test.shader.py",
+				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
-					"color":[0,0,1,1]
+					"am_color":[1,1,1,1],
+					"am_k":1,
+					"dif_color":[0,0,1,1],
+					"dif_k":2.3
 				}
 			}
 		},
@@ -75,9 +84,12 @@
 			"params":{
 				"point":[-3.5837,2.3143,2.3361],
 				"normal":[0,1,0],
-				"shader":"shaders/test.shader.py",
+				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
-					"color":[1,1,0,1]
+					"am_color":[1,1,1,1],
+					"am_k":1,
+					"dif_color":[1,1,0,1],
+					"dif_k":2.3
 				}
 			}
 		}

@@ -24,6 +24,13 @@ class RayTracingHit:
 	def reset(self):
 		self.t = sys.float_info.max
 
+class ShadowHit:
+	def __init__(self):
+		self.t = sys.float_info.max
+
+	def reset(self):
+		self.t = sys.float_info.max
+
 class Tracer:
 	def __init__(self, tracingTimes):
 		self.tracingTimes = tracingTimes
@@ -32,6 +39,9 @@ class Tracer:
 		pass
 
 	def trace(self, ray, scene, epsilon):
+		pass
+
+	def shadow_hit(self, ray, shadowhit):
 		pass
 
 
@@ -45,12 +55,10 @@ class SimpleTracer(Tracer):
 
 	def trace(self, ray, scene, epsilon):
 		return SimpleTracer.__trace_recursion(self, ray, scene, epsilon, 0)
-		# hit.reset()
-		# result = None
-		# for g in self.gemoetries:
-		# 	if g.hit(ray, hit, epsilon):
-		# 		result = g.material.shade(hit, scene)
-		# return result
+	
+	def shadow_hit(self, ray, distance, epsilon):
+		shadowhit = ShadowHit()
+		return SimpleTracer.__shadow_trace(self, ray, shadowhit, distance, epsilon)
 
 	def __trace_recursion(self, ray, scene, epsilon, n):
 		hit = RayTracingHit()
@@ -72,6 +80,17 @@ class SimpleTracer(Tracer):
 				hit.material = g.material
 				result = True
 		return result
+
+	def __shadow_trace(self, ray, shadowhit, distance, epsilon):
+		shadowhit.reset()
+		for g in self.gemoetries:
+			if g.shadowhit(ray, shadowhit, epsilon):
+				if distance > 0:
+					if shadowhit.t < distance:
+						return True
+				else:
+					return True
+		return False
 
 
 def create_tracer(params):

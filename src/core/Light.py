@@ -3,8 +3,8 @@ from Color import *
 from Tracer import *
 
 class Light:
-	def __init__(self):
-		pass
+	def __init__(self, shadow):
+		self.casts_shadows = shadow
 
 	def get_direction(self, hit):
 		pass
@@ -13,8 +13,8 @@ class Light:
 		pass
 
 class PointLight(Light):
-	def __init__(self, position, ls, color):
-		Light.__init__(self)
+	def __init__(self, shadow, position, ls, color):
+		Light.__init__(self, shadow)
 		self.position = position
 		self.ls = ls
 		self.color = color
@@ -30,17 +30,23 @@ class PointLight(Light):
 		ls = params['ls']
 		pos = Vector3(params['position'][0],params['position'][1],params['position'][2])
 		col = Color(params['color'][0], params['color'][1], params['color'][2], params['color'][3])
-		return PointLight(pos, ls, col)
+		shadow = False
+		if 'shadow' in params:
+			shadow = params['shadow'] == 1
+		return PointLight(shadow, pos, ls, col)
 
 class DirectionalLight(Light):
-	def __init__(self, direction, ls, color):
-		Light.__init__(self)
+	def __init__(self, shadow, direction, ls, color):
+		Light.__init__(self, shadow)
 		self.direction = direction.get_normalized()
 		self.ls = ls
 		self.color = color
 
 	def get_direction(self, hit):
 		return self.direction
+
+	def in_shadow(self, scene, ray):
+		return scene.tracer.shadow_hit(ray, -1, 0.00001)
 
 	def L(self, hit):
 		return self.ls*self.color
@@ -50,11 +56,14 @@ class DirectionalLight(Light):
 		ls = params['ls']
 		d = Vector3(params['direction'][0],params['direction'][1],params['direction'][2])
 		col = Color(params['color'][0], params['color'][1], params['color'][2], params['color'][3])
-		return DirectionalLight(d, ls, col)
+		shadow = False
+		if 'shadow' in params:
+			shadow = params['shadow'] == 1
+		return DirectionalLight(shadow, d, ls, col)
 
 class Ambient(Light):
 	def __init__(self, ls, color):
-		Light.__init__(self)
+		Light.__init__(self, False)
 		self.ls = ls
 		self.color = color
 
