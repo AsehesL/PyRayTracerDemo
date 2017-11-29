@@ -12,7 +12,7 @@
 			"forward":[-0.559,-0.507,0.656],
 			"up":[-0.329,0.862,0.386],
 			"near":0.3,
-			"sampler":"RamdomSampler",
+			"sampler":"RandomSampler",
 			"num_samples":2,
 			"pixel_width":0.0010,
 			"pixel_height":0.0010
@@ -33,6 +33,16 @@
 				"ls":1,
 				"direction":[0.321,0.766,-0.557],
 				"shadow":1
+			}
+		},
+		{
+			"type":"AmbientOccluder",
+			"params":{
+				"color":[0.3,0.356,0.39,1],
+				"ls":0.3,
+				"min_amount":0.3,
+				"sampler":"RandomSampler",
+				"num_samples":4
 			}
 		}
 	],

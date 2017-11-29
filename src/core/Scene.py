@@ -32,6 +32,8 @@ class Scene:
 			for l in scenejson["Lights"]:
 				if l["type"] == "Ambient":
 					self.ambient = create_light(l["type"], l["params"])
+				elif l["type"] == "AmbientOccluder":
+					self.ambient_occluder = create_light(l["type"], l["params"])
 				else:
 					self.lights.append(create_light(l["type"], l["params"]))
 			camPamras = scenejson["Camera"]
