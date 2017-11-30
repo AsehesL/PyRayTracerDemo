@@ -34,7 +34,7 @@ class Camera:
 				callback(progress)
 			for i in range(0,self.target.width()):
 				r = Color.black
-				for n in range(0,self.sampler.numSamples):
+				for n in range(0,self.sampler.num_samples):
 					sp = self.sampler.sample_unit_square()
 					x = self.pixelWidth*(i-0.5*(self.target.width())+sp.x)
 					y = self.pixelHeight*((self.target.height()-1- j)-0.5*(self.target.height())+sp.y)
@@ -42,7 +42,7 @@ class Camera:
 					ray = self.screen_point_to_ray(Vector2(x,y))
 					r += scene.tracer.trace(ray, scene, 0.000001)
 				if r != None:
-					self.target.set_pixel(i,j,r/self.sampler.numSamples)
+					self.target.set_pixel(i,j,r/self.sampler.num_samples)
 
 
 def create_camera(params):

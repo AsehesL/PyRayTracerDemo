@@ -4,18 +4,93 @@ import math
 from Vector import *
 
 class Sampler:
-	def __init__(self, numSamples):
-		self.numSamples = numSamples
+	def __init__(self, numSamples, numSets=83):
+		self.num_samples = numSamples
+		self.num_sets = numSets
 		self.samples = []
 		self.hemisphere_samples = []
+		self.disk_samples = []
+		self.sphere_samples = []
 		self.index = 0
-		self.hindex = 0
+		self.jump = 0
+		Sampler.setup_shuffled_indices(self)
+
+	def setup_shuffled_indices(self):
+		indexes = []
+		self.shuffled_indices = []
+		for i in range(0, self.num_samples):
+			indexes.append(i)
+		for p in range(0, self.num_sets):
+			random.shuffle(indexes)
+			for j in range(0, self.num_samples):
+				self.shuffled_indices.append(indexes[j])
+
+	def shuffle_x_coordinates(self):
+		for i in range(0, self.num_sets):
+			for j in range(0, self.num_samples-1):
+				target = int(random.randint(0,self.num_samples-1)+i*self.num_samples)
+				temp = self.samples[j+i*self.num_samples+1].x
+				self.samples[j+i*self.num_samples+1].x = self.samples[target].x
+				self.samples[target].x = temp
+
+	def shuffle_y_coordinates(self):
+		for i in range(0, self.num_sets):
+			for j in range(0, self.num_samples-1):
+				target = int(random.randint(0,self.num_samples-1)+i*self.num_samples)
+				temp = self.samples[j+i*self.num_samples+1].y
+				self.samples[j+i*self.num_samples+1].y = self.samples[target].y
+				self.samples[target].y = temp
 
 	def sample_unit_square(self):
-		pass
+		if int(self.index % self.num_samples) == 0:
+			self.jump = random.randint(0, self.num_sets - 1)*self.num_samples
+		ind = self.samples[self.jump + self.shuffled_indices[self.jump + self.index % self.num_samples]]
+		self.index += 1
+		return ind
+
+	def sample_unit_disk(self):
+		if int(self.index % self.num_samples) == 0:  		
+			self.jump = random.randint(0, self.num_sets - 1)*self.num_samples
+		ind = self.disk_samples[self.jump + self.shuffled_indices[self.jump + self.index % self.num_samples]]
+		self.index += 1
+		return ind
 
 	def sample_hemisphere(self):
-		pass
+		if int(self.index % self.num_samples) == 0:  		
+			self.jump = random.randint(0, self.num_sets - 1)*self.num_samples
+		ind = self.hemisphere_samples[self.jump + self.shuffled_indices[self.jump + self.index % self.num_samples]]
+		self.index += 1
+		return ind
+
+	def sample_sphere(self):
+		if int(self.index % self.num_samples) == 0:  		
+			self.jump = random.randint(0, self.num_sets - 1)*self.num_samples
+		ind = self.sphere_samples[self.jump + self.shuffled_indices[self.jump + self.index % self.num_samples]]
+		self.index += 1
+		return ind
+
+	def map_samples_to_unit_disk(self):
+		for j in range(0, len(self.samples)):
+			sp = Vector2(2.0*self.samples[j].x-1.0, 2.0*self.samples[j].y-1.0)
+			if sp.x > - sp.y:
+				if sp.x > sp.y:
+					r = sp.x
+					phi = sp.y / sp.x
+				else:
+					r = sp.y
+					phi = 2 - sp.x / sp.y
+			else:
+				if sp.x < sp.y:
+					r = -sp.x
+					phi = 4 + sp.y / sp.x
+				else:
+					r = -sp.y
+					if sp.y != 0.0:
+						phi = 6 - sp.x/sp.y
+					else:
+						phi = 0.0
+			phi *= math.pi / 4.0
+			self.disk_samples.append(Vector2(r*math.cos(phi),r*math.sin(phi)))
 
 	def map_samples_to_hemisphere(self, e):
 		for i in range(0, len(self.samples)):
@@ -28,24 +103,31 @@ class Sampler:
 			pw = cos_theta
 			self.hemisphere_samples.append(Vector3(pu,pv,pw))
 
+	def map_samples_to_sphere(self):
+		for i in range(0, len(self.samples)):
+			r1 = self.samples[i].x 
+			r2 = self.samples[i].y
+			z = 1.0 - 2.0 * r1
+			r = math.sqrt(1.0 - z * z)
+			phi = math.pi*2*r2
+			x = r*math.cos(phi)
+			y = r*math.sin(phi)
+			self.sphere_samples.append(Vector3(x,y,z))
+
 class RandomSampler(Sampler):
 	def __init__(self, numSamples):
 		Sampler.__init__(self, numSamples)
-		for i in range(0, 83):
-			sp = Vector2(random.random(), random.random())
-			self.samples.append(sp)
-
-	def sample_unit_square(self):
-		s = self.samples[int(self.index%len(self.samples))]
-		self.index += 1
-		return s
-
-	def sample_hemisphere(self):
-		s = self.hemisphere_samples[int(self.hindex%len(self.hemisphere_samples))]
-		self.hindex += 1
-		return s
+		for i in range(0, self.num_sets):
+			for j in range(0, self.num_samples):
+				self.samples.append(Vector2(random.random(), random.random()))
 
 class JitteredSampler(Sampler):
 	def __init__(self, numSamples):
-		pass
+		Sampler.__init__(self, numSamples)
+		n = int(math.sqrt(numSamples))
+		for i in range(0, self.num_sets):
+			for j in range(0, n):
+				for k in range(0, n):
+					sp = Vector2(k+random.random()/n, j+random.random()/n)
+					self.samples.append(sp)
 

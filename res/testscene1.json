@@ -1,19 +1,19 @@
 {
 	"Result":{
-		"width":575,
-		"height":335
+		"width":500,
+		"height":330
 	},
 	"Tracer":{
 		"max_trace":0
 	},
 	"Camera":{
 		"params":{
-			"position":[-1.255,4.965,-0.137],
-			"forward":[-0.559,-0.507,0.656],
-			"up":[-0.329,0.862,0.386],
+			"position":[-3.127905,3.653584,-2.871476],
+			"forward":[0.565,-0.588,0.578],
+			"up":[0.411,0.809,0.421],
 			"near":0.3,
-			"sampler":"RandomSampler",
-			"num_samples":2,
+			"sampler":"JitteredSampler",
+			"num_samples":16,
 			"pixel_width":0.0010,
 			"pixel_height":0.0010
 		}
@@ -42,7 +42,7 @@
 				"ls":0.3,
 				"min_amount":0.3,
 				"sampler":"RandomSampler",
-				"num_samples":4
+				"num_samples":25
 			}
 		}
 	],
@@ -50,7 +50,7 @@
 		{
 			"type":"Sphere",
 			"params":{
-				"point":[-3.91183,3.228,1.81556],
+				"point":[-1.198748,2.02,-0.8042314],
 				"radius":0.5,
 				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
@@ -64,7 +64,7 @@
 		{
 			"type":"Sphere",
 			"params":{
-				"point":[-2.733,3.228,2.681],
+				"point":[-2.41,2.02,-0.77],
 				"radius":0.5,
 				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
@@ -78,7 +78,7 @@
 		{
 			"type":"Sphere",
 			"params":{
-				"point":[-2.633,3.228,1.419],
+				"point":[-0.87,2.02,-2.03],
 				"radius":0.5,
 				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
@@ -92,7 +92,7 @@
 		{
 			"type":"Plane",
 			"params":{
-				"point":[-3.5837,2.3143,2.3361],
+				"point":[-1.198748,1.518077,-0.8042314],
 				"normal":[0,1,0],
 				"shader":"shaders/diffuse.shader.py",
 				"shader_params":{
