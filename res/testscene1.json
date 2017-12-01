@@ -13,7 +13,7 @@
 			"up":[0.411,0.809,0.421],
 			"near":0.3,
 			"sampler":"JitteredSampler",
-			"num_samples":16,
+			"num_samples":4,
 			"pixel_width":0.0010,
 			"pixel_height":0.0010
 		}
@@ -30,7 +30,7 @@
 			"type":"DirectionalLight",
 			"params":{
 				"color":[1,1,1,1],
-				"ls":1,
+				"ls":0.3,
 				"direction":[0.321,0.766,-0.557],
 				"shadow":1
 			}
@@ -39,10 +39,10 @@
 			"type":"AmbientOccluder",
 			"params":{
 				"color":[0.3,0.356,0.39,1],
-				"ls":0.3,
-				"min_amount":0.3,
-				"sampler":"RandomSampler",
-				"num_samples":25
+				"ls":0.5,
+				"min_amount":0.0,
+				"sampler":"JitteredSampler",
+				"num_samples":225
 			}
 		}
 	],
@@ -56,7 +56,7 @@
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
-					"dif_color":[1,0,0,1],
+					"dif_color":[0.6,0.6,0.6,1],
 					"dif_k":2.3
 				}
 			}
@@ -70,7 +70,7 @@
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
-					"dif_color":[0,1,0,1],
+					"dif_color":[0.6,0.6,0.6,1],
 					"dif_k":2.3
 				}
 			}
@@ -84,7 +84,7 @@
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
-					"dif_color":[0,0,1,1],
+					"dif_color":[0.6,0.6,0.6,1],
 					"dif_k":2.3
 				}
 			}
@@ -98,7 +98,7 @@
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
-					"dif_color":[1,1,0,1],
+					"dif_color":[0.6,0.6,0.6,1],
 					"dif_k":2.3
 				}
 			}

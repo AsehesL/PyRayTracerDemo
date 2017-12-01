@@ -128,6 +128,6 @@ class JitteredSampler(Sampler):
 		for i in range(0, self.num_sets):
 			for j in range(0, n):
 				for k in range(0, n):
-					sp = Vector2(k+random.random()/n, j+random.random()/n)
+					sp = Vector2((k+random.random())/n, (j+random.random())/n)
 					self.samples.append(sp)
 

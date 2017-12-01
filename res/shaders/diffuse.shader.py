@@ -4,13 +4,13 @@ def main(hit, scene, reflcol, output):
 	dcol = Color(dif_color[0], dif_color[1], dif_color[2], dif_color[3])
 	difk = dif_k
 
-	#amcl = Color.black
-	#for i in range(0, 100):
-	#	amcl += scene.ambient_occluder.L(hit, scene)
-	#amcl = amcl/100
-	#col = amk*acol*amcl
+	amcl = Color.black
+	for i in range(0, 16):
+		amcl += scene.ambient_occluder.L(hit, scene)
+	amcl = amcl/16
+	col = amk*acol*amcl
 	#col = amk*acol*scene.ambient_occluder.L(hit, scene)
-	col = amk*acol*scene.ambient.L(hit, scene)
+	#col = amk*acol*scene.ambient_occluder.L(hit, scene)
 
 
 	for light in scene.lights:
