@@ -115,15 +115,15 @@ class Sampler:
 			self.sphere_samples.append(Vector3(x,y,z))
 
 class RandomSampler(Sampler):
-	def __init__(self, numSamples):
-		Sampler.__init__(self, numSamples)
+	def __init__(self, numSamples, numSets=83):
+		Sampler.__init__(self, numSamples, numSets)
 		for i in range(0, self.num_sets):
 			for j in range(0, self.num_samples):
 				self.samples.append(Vector2(random.random(), random.random()))
 
 class JitteredSampler(Sampler):
-	def __init__(self, numSamples):
-		Sampler.__init__(self, numSamples)
+	def __init__(self, numSamples, numSets=83):
+		Sampler.__init__(self, numSamples, numSets)
 		n = int(math.sqrt(numSamples))
 		for i in range(0, self.num_sets):
 			for j in range(0, n):
@@ -131,3 +131,51 @@ class JitteredSampler(Sampler):
 					sp = Vector2((k+random.random())/n, (j+random.random())/n)
 					self.samples.append(sp)
 
+class HammersleySampler(Sampler):
+	def __init__(self, numSamples, numSets=83):
+		Sampler.__init__(self, numSamples, numSets)
+		for i in range(0, self.num_sets):
+			for j in range(0, self.num_samples):
+				sp = Vector2(j/self.num_samples, Hammersley.__phi(self, j))
+				self.samples.append(sp)
+
+	def __phi(self, j):
+		x = 0.0
+		f = 0.5
+		while j:
+			x += f * (j%2)
+			j /= 2
+			f *= 0.5
+		return x
+
+class NRooksSampler(Sampler):
+	def __init__(self, numSamples, numSets=83):
+		Sampler.__init__(self, numSamples, numSets)
+		for i in range(0, self.num_sets):
+			for j in range(0, self.num_samples):
+				sp = Vector2((j+random.random())/self.num_samples, (j+random.random())/self.num_samples)
+				self.samples.append(sp)
+		self.shuffle_x_coordinates()
+		self.shuffle_y_coordinates()
+
+
+class RegularSampler(Sampler):
+	def __init__(self, numSamples, numSets=83):
+		Sampler.__init__(self, numSamples, numSets)
+		n = int(math.sqrt(numSamples))
+		for i in range(0, self.num_sets):
+			for j in range(0, n):
+				for k in range(0, n):
+					sp = Vector2((k+0.5)/n, (j+0.5)/n)
+					self.samples.append(sp)
+
+
+# class MultiJitteredSampler(Sampler):
+# 	def __init__(self, numSamples, numSets=83):
+# 		Sampler.__init__(self, numSamples, numSets)
+# 		n = int(math.sqrt(numSamples))
+# 		subcellw = 1.0/self.num_samples
+
+# 		for j in range(0, self.num_samples*self.num_sets):
+			
+		

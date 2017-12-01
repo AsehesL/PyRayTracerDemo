@@ -18,12 +18,46 @@
 			"pixel_height":0.0010
 		}
 	},
+	"Ambient":{
+		"type":"AmbientOccluder",
+		"params":{
+			"color":[0.3,0.356,0.39,1],
+			"ls":0.5,
+			"min_amount":0.0,
+			"sampler":"RegularSampler",
+			"num_samples":256,
+			"use":true
+		}
+	},
+	"AreaLights":[
+		{
+			"type":"AreaLight",
+			"params":{
+				"use":true,
+				"geometric_object":"Sphere",
+				"geometric_params":{
+					"point":[0,3.02,-2.32],
+					"radius":0.25,
+					"shader":"shaders/emissive.shader.py",
+					"sampler":"JitteredSampler",
+					"num_samples":225,
+					"shader_params":{
+						"ce":[1,1,1,1],
+						"ls":1
+					}
+				}
+			}
+		}
+	],
 	"Lights":[
 		{
-			"type":"Ambient",
+			"type":"PointLight",
 			"params":{
-				"color":[0.3,0.356,0.39,1],
-				"ls":0.3
+				"color":[1,1,1,1],
+				"ls":1.2,
+				"position":[-0.045,3.318,-2.248],
+				"shadow":1,
+				"use":false
 			}
 		},
 		{
@@ -32,17 +66,8 @@
 				"color":[1,1,1,1],
 				"ls":0.3,
 				"direction":[0.321,0.766,-0.557],
-				"shadow":1
-			}
-		},
-		{
-			"type":"AmbientOccluder",
-			"params":{
-				"color":[0.3,0.356,0.39,1],
-				"ls":0.5,
-				"min_amount":0.0,
-				"sampler":"JitteredSampler",
-				"num_samples":225
+				"shadow":1,
+				"use":false
 			}
 		}
 	],
@@ -53,6 +78,7 @@
 				"point":[-1.198748,2.02,-0.8042314],
 				"radius":0.5,
 				"shader":"shaders/diffuse.shader.py",
+				"use":true,
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
@@ -67,6 +93,7 @@
 				"point":[-2.41,2.02,-0.77],
 				"radius":0.5,
 				"shader":"shaders/diffuse.shader.py",
+				"use":true,
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
@@ -81,6 +108,7 @@
 				"point":[-0.87,2.02,-2.03],
 				"radius":0.5,
 				"shader":"shaders/diffuse.shader.py",
+				"use":true,
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
@@ -95,6 +123,7 @@
 				"point":[-1.198748,1.518077,-0.8042314],
 				"normal":[0,1,0],
 				"shader":"shaders/diffuse.shader.py",
+				"use":true,
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,

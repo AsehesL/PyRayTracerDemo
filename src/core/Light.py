@@ -2,6 +2,7 @@ from Vector import Vector3
 from Color import *
 from Tracer import *
 from Sampler import *
+from GeometricObject import *
 
 class Light:
 	def __init__(self, shadow):
@@ -13,6 +14,12 @@ class Light:
 	def L(self, hit, scene):
 		pass
 
+	def G(self, hit):
+		return 1
+
+	def pdf(self, hit):
+		return 1
+
 class PointLight(Light):
 	def __init__(self, shadow, position, ls, color):
 		Light.__init__(self, shadow)
@@ -23,8 +30,13 @@ class PointLight(Light):
 	def get_direction(self, hit):
 		return (self.position - hit.point).get_normalized()
 
+	def in_shadow(self, scene, ray):
+		ts = Vector3.distance(self.position, ray.origin)
+		return scene.tracer.shadow_hit(ray, ts, 0.00001)
+
 	def L(self, hit, scene):
-		return self.ls*self.color
+		rp = (hit.point - self.position).sqr_magnitude()
+		return self.ls*self.color/rp
 
 	@staticmethod
 	def create(params):
@@ -116,11 +128,53 @@ class AmbientOccluder(Light):
 		samplertype = params['sampler']
 		samplenum = params['num_samples']
 		sampler = eval('%s(%d)'%(samplertype, samplenum))
-		print(minam)
 		return AmbientOccluder(sampler, ls, col, minam)
 
+class AreaLight(Light):
+	def __init__(self, shadow, obj):
+		Light.__init__(self, shadow)
+		self.obj = obj
+		self.material = obj.material
+
+	def get_direction(self, hit):
+		self.sample_point = self.obj.sample()
+		self.light_normal = self.obj.get_normal(self.sample_point)
+		self.light_dir = (self.sample_point - hit.point).get_normalized()
+		return self.light_dir
+
+	def in_shadow(self, scene, ray):
+		ts = Vector3.dot(self.sample_point - ray.origin, ray.direction)
+		return scene.tracer.shadow_hit(ray, ts, 0.00001)
+
+	def L(self, hit, scene):
+		ndl = max(0, Vector3.dot(-1*self.light_normal, self.light_dir))
+		return ndl * self.material.shade(hit, scene, 0, 'em_main')
+
+
+	def G(self, hit):
+		ndl = max(0, Vector3.dot(-1*self.light_normal, self.light_dir))
+		return ndl/((hit.point-self.sample_point).sqr_magnitude())
+
+	def pdf(self, hit):
+		return self.obj.pdf(hit)
+
+	@staticmethod
+	def create(params):
+		gtype = params['geometric_object']
+		gparams = params['geometric_params']
+		go = create_from_scene_file(gtype, gparams)
+		samplerType = gparams['sampler']
+		nums = gparams['num_samples']
+		sampler = eval('%s(%d)'%(samplerType, nums))
+		go.set_sampler(sampler)
+		shadow = False
+		if 'shadow' in params:
+			shadow = params['shadow'] == 1
+		return AreaLight(shadow, go)
 
 def create_light(ltype, params):
+	if 'use' in params and params['use'] == False:
+		return None
 	createCmd = '%s.create(%s)'%(ltype,params)
 	l = eval(createCmd)
 	return l

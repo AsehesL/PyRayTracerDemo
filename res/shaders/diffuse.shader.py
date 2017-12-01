@@ -6,7 +6,7 @@ def main(hit, scene, reflcol, output):
 
 	amcl = Color.black
 	for i in range(0, 16):
-		amcl += scene.ambient_occluder.L(hit, scene)
+		amcl += scene.ambient.L(hit, scene)
 	amcl = amcl/16
 	col = amk*acol*amcl
 	#col = amk*acol*scene.ambient_occluder.L(hit, scene)

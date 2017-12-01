@@ -1,6 +1,7 @@
 from Vector import *
 from Tracer import *
 from Material import Material
+from Sampler import *
 import Res
 import math
 import os.path
@@ -11,6 +12,18 @@ class GeometricObject:
 		self.material = Material(shader)
 
 	def hit(self, ray, hit, epsilon):
+		pass
+
+	def sample(self):
+		return Vector3.zero
+
+	def set_sampler(self, sampler):
+		self.sampler = sampler
+
+	def get_normal(self, point):
+		pass
+
+	def pdf(self, hit):
 		pass
 
 	def shadowhit(self, ray, shadowhit, epsilon):
@@ -80,8 +93,24 @@ class Sphere(GeometricObject):
 				hit.t = t
 				hit.normal = (tocenter+ray.direction*t)/self.radius
 				hit.point = ray.origin+ray.direction*t
+				hit.ray = ray
 				return True
 		return False
+
+	def set_sampler(self, sampler):
+		self.sampler = sampler
+		self.sampler.map_samples_to_sphere()
+
+	def get_normal(self, point):
+		tocenter = point - self.point
+		return tocenter.get_normalized()
+
+	def sample(self):
+		sp = self.sampler.sample_sphere()
+		return self.point+Vector3(sp.x*self.radius,sp.y*self.radius, sp.z*self.radius)
+
+	def pdf(self, hit):
+		return 1/(4*math.pi*self.radius*self.radius)
 
 	def shadowhit(self, ray, shadowhit, epsilon):
 		tocenter = ray.origin - self.point
@@ -115,6 +144,8 @@ class Sphere(GeometricObject):
 		return Sphere(s, pos, r)
 
 def create_from_scene_file(gtype, params):
+	if 'use' in params and params['use'] == False:
+		return None
 	if 'shader' in params:
 		params['shader'] = Res.combine_res_path(params['shader'])
 

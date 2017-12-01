@@ -28,14 +28,26 @@ class Scene:
 			file.close()
 			self.tracer = create_tracer(scenejson["Tracer"])
 			for g in scenejson["Gemoetries"]:
-				self.tracer.push_obj(create_from_scene_file(g["type"],g["params"]))
+				go = create_from_scene_file(g["type"],g["params"])
+				if go == None:
+					continue
+				self.tracer.push_obj(go)
+			if 'Ambient' in scenejson:
+				l = scenejson['Ambient']
+				al = create_light(l["type"], l["params"])
+				self.ambient = al
+			if 'AreaLights' in scenejson:
+				for l in scenejson['AreaLights']:
+					light = create_light(l["type"], l["params"])
+					if light == None:
+						continue
+					self.lights.append(light)
+					self.tracer.push_obj(light.obj)
 			for l in scenejson["Lights"]:
-				if l["type"] == "Ambient":
-					self.ambient = create_light(l["type"], l["params"])
-				elif l["type"] == "AmbientOccluder":
-					self.ambient_occluder = create_light(l["type"], l["params"])
-				else:
-					self.lights.append(create_light(l["type"], l["params"]))
+				light = create_light(l["type"], l["params"])
+				if light == None:
+					continue
+				self.lights.append(light)
 			camPamras = scenejson["Camera"]
 			self.camera = create_camera(camPamras["params"])
 			cfg = scenejson["Result"]

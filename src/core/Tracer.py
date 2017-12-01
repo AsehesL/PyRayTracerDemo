@@ -18,6 +18,7 @@ class RayTracingHit:
 	def __init__(self):
 		self.point = Vector3.zero
 		self.normal = Vector3.zero
+		self.ray = None
 		self.material = None
 		self.t = sys.float_info.max
 
@@ -62,6 +63,7 @@ class SimpleTracer(Tracer):
 
 	def __trace_recursion(self, ray, scene, epsilon, n):
 		hit = RayTracingHit()
+		hit.ray = ray
 		if SimpleTracer.__trace(self, ray, hit, epsilon):
 			if n == self.tracingTimes and hit.material != None:
 				return hit.material.shade(hit, scene, None)
