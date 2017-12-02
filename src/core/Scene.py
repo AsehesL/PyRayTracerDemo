@@ -48,6 +48,7 @@ class Scene:
 				if light == None:
 					continue
 				self.lights.append(light)
+
 			camPamras = scenejson["Camera"]
 			self.camera = create_camera(camPamras["params"])
 			cfg = scenejson["Result"]

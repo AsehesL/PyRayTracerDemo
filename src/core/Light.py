@@ -3,6 +3,8 @@ from Color import *
 from Tracer import *
 from Sampler import *
 from GeometricObject import *
+from Material import *
+import Res
 
 class Light:
 	def __init__(self, shadow):
@@ -175,9 +177,45 @@ class AreaLight(Light):
 		return AreaLight(shadow, go)
 
 class EnvironmentLight(Light):
-	def __init__(self, shadow, material):
+	def __init__(self, sampler, shadow, material):
 		Light.__init__(self, shadow)
+		self.sampler = sampler
+		self.sampler.map_samples_to_hemisphere(1)
 		self.material = material
+		
+	def get_direction(self, hit):
+		self.w = hit.normal
+		self.v = Vector3.cross(Vector3(0.0034, 1.0, 0.0071), self.w)
+		self.v.normalize()
+		self.u = Vector3.cross(self.v, self.w)
+		pos = self.sampler.sample_hemisphere()
+		self.light_dir = pos.x*self.u + pos.y*self.v+pos.z*self.w
+		return self.light_dir
+
+	def in_shadow(self, scene, ray):
+		return scene.tracer.shadow_hit(ray, 0.00001)
+
+	def L(self, hit, scene):
+		return self.material.shade(hit, scene, 0, Material.em_pass)
+
+	def pdf(self, hit):
+		return Vector3.dot(hit.normal, self.light_dir)/math.pi 
+
+	@staticmethod
+	def create(params):
+		samplertype = params['sampler']
+		samplenum = params['num_samples']
+		sampler = eval('%s(%d)'%(samplertype, samplenum))
+		shadow = False
+		if 'shadow' in params:
+			shadow = params['shadow'] == 1
+		if 'shader' in params:
+			params['shader'] = Res.combine_res_path(params['shader'])
+		mat = Material(params["shader"])
+		if 'shader_params' in params:
+			for p in params["shader_params"]:
+				mat.set_param(p, params["shader_params"][p])
+		return EnvironmentLight(sampler, shadow, mat)
 
 def create_light(ltype, params):
 	if 'use' in params and params['use'] == False:
