@@ -151,7 +151,7 @@ class AreaLight(Light):
 	def L(self, hit, scene):
 		ndl = Vector3.dot(-1*self.light_normal, self.light_dir)
 		if ndl > 0.0:
-			return self.material.shade(hit, scene, 0, Material.em_pass)
+			return self.material.shade(hit, scene, Material.em_pass)
 		return Color.black
 
 
@@ -196,7 +196,7 @@ class EnvironmentLight(Light):
 		return scene.tracer.shadow_hit(ray, 0.00001)
 
 	def L(self, hit, scene):
-		return self.material.shade(hit, scene, 0, Material.em_pass)
+		return self.material.shade(hit, scene, Material.em_pass)
 
 	def pdf(self, hit):
 		return Vector3.dot(hit.normal, self.light_dir)/math.pi 

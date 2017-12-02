@@ -81,7 +81,7 @@ class Vector2:
 
 	@staticmethod
 	def reflect(direction, normal):
-		return -2.0 * Vector2.dot(normal, direction)*normal+direction
+		return 2.0 * Vector2.dot(normal, direction)*normal-direction
 
 	@staticmethod
 	def angle(fromvec, tovec):
@@ -195,7 +195,7 @@ class Vector3:
 
 	@staticmethod
 	def reflect(direction, normal):
-		return -2.0 * Vector3.dot(normal, direction)*normal+direction
+		return 2.0 * Vector3.dot(normal, direction)*normal-direction
 
 	# @staticmethod
 	# def refract(direction, normal, eta):

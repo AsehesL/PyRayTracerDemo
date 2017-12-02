@@ -2,6 +2,7 @@ import sys
 
 from Vector import *
 from GeometricObject import *
+from Color import *
 
 class Ray:
 	def __init__(self, origin, direction):
@@ -20,6 +21,7 @@ class RayTracingHit:
 		self.normal = Vector3.zero
 		self.ray = None
 		self.material = None
+		self.depth = 0
 		self.t = sys.float_info.max
 
 	def reset(self):
@@ -34,12 +36,12 @@ class ShadowHit:
 
 class Tracer:
 	def __init__(self, tracingTimes):
-		self.tracingTimes = tracingTimes
+		self.tracing_times = tracingTimes
 
 	def push_obj(self, obj):
 		pass
 
-	def trace(self, ray, scene, epsilon):
+	def trace(self, ray, scene, epsilon, depth = 0):
 		pass
 
 	def shadow_hit(self, ray, shadowhit):
@@ -54,25 +56,34 @@ class SimpleTracer(Tracer):
 	def push_obj(self, obj):
 		self.gemoetries.append(obj)
 
-	def trace(self, ray, scene, epsilon):
-		return SimpleTracer.__trace_recursion(self, ray, scene, epsilon, 0)
+	def trace(self, ray, scene, epsilon, depth = 0):
+		if depth > self.tracing_times:
+			return Color.black
+		hit = RayTracingHit()
+		hit.ray = ray
+		hit.depth = depth
+		if SimpleTracer.__trace(self, ray, hit, epsilon):
+			return hit.material.shade(hit, scene)
+		return None
+
+		#return SimpleTracer.__trace_recursion(self, ray, scene, epsilon, 0)
 	
 	def shadow_hit(self, ray, epsilon, shadowFilter = None):
 		shadowhit = ShadowHit()
 		return SimpleTracer.__shadow_trace(self, ray, shadowhit, epsilon, shadowFilter)
 
-	def __trace_recursion(self, ray, scene, epsilon, n):
-		hit = RayTracingHit()
-		hit.ray = ray
-		if SimpleTracer.__trace(self, ray, hit, epsilon):
-			if n == self.tracingTimes and hit.material != None:
-				return hit.material.shade(hit, scene, None)
-			elif hit.material != None:
-				reflDir = Vector3.reflect(ray.direction, hit.normal).get_normalized()
-				newRay = Ray(hit.point, reflDir)
-				reflCol = SimpleTracer.__trace_recursion(self, newRay, scene, epsilon, n+1)
-				return hit.material.shade(hit, scene, reflCol)
-		return None
+	# def __trace_recursion(self, ray, scene, epsilon, n):
+	# 	hit = RayTracingHit()
+	# 	hit.ray = ray
+	# 	if SimpleTracer.__trace(self, ray, hit, epsilon):
+	# 		if n == self.tracingTimes and hit.material != None:
+	# 			return hit.material.shade(hit, scene, None)
+	# 		elif hit.material != None:
+	# 			reflDir = Vector3.reflect(ray.direction, hit.normal).get_normalized()
+	# 			newRay = Ray(hit.point, reflDir)
+	# 			reflCol = SimpleTracer.__trace_recursion(self, newRay, scene, epsilon, n+1)
+	# 			return hit.material.shade(hit, scene, reflCol)
+	# 	return None
 
 	def __trace(self, ray, hit, epsilon):
 		hit.reset()

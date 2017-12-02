@@ -96,7 +96,7 @@ class Sampler:
 		for i in range(0, len(self.samples)):
 			cos_phi = math.cos(2.0*math.pi*self.samples[i].x)
 			sin_phi = math.sin(2.0*math.pi*self.samples[i].x)
-			cos_theta = math.pow(1.0-self.samples[i].y,1.0/(e+1.0))
+			cos_theta = (1.0-self.samples[i].y)**(1.0/(e+1.0))
 			sin_theta = math.sqrt(1.0-cos_theta*cos_theta)
 			pu = sin_theta*cos_phi
 			pv = sin_theta*sin_phi

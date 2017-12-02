@@ -4,7 +4,7 @@ from Color import *
 
 def generate_shader(scriptContent, shadepass):
 	head = 'from Vector import *\nfrom Color import Color\nimport math\nfrom Light import *\nfrom Scene import *\nfrom Tracer import *\n'
-	entry = '\n%s(hit, scene, reflcol, output)'%shadepass
+	entry = '\n%s(hit, scene, output)'%shadepass
 	return head + scriptContent + entry 
 
 class Material:
@@ -29,12 +29,11 @@ class Material:
 			return self.params[key]
 		return None
 
-	def shade(self, hit, scene, reflcol, shadepass='main'):
+	def shade(self, hit, scene, shadepass='main'):
 		if self.shader == None:
 			return Color.error
 		self.params['hit'] = hit
 		self.params['scene'] = scene
-		self.params['reflcol'] = reflcol
 		self.params['output'] = {}
 		shadercode = generate_shader(self.shader, shadepass)
 		exec(shadercode, self.params)

@@ -4,7 +4,7 @@
 		"height":330
 	},
 	"Tracer":{
-		"max_trace":0
+		"max_trace":1
 	},
 	"Camera":{
 		"params":{
@@ -22,7 +22,7 @@
 		"type":"AmbientOccluder",
 		"params":{
 			"color":[0.3,0.356,0.39,1],
-			"ls":0,
+			"ls":0.5,
 			"min_amount":0.0,
 			"sampler":"RegularSampler",
 			"num_samples":256
@@ -78,7 +78,7 @@
 				"ls":1.2,
 				"position":[-0.045,3.318,-2.248],
 				"shadow":1,
-				"use":false
+				"use":true
 			}
 		},
 		{
@@ -98,7 +98,7 @@
 				"sampler":"JitteredSampler",
 				"num_samples":225,
 				"shadow":1,
-				"use":true,
+				"use":false,
 				"shader_params":{
 					"ce":[1,1,1,1],
 					"ls":0.7
@@ -112,13 +112,17 @@
 			"params":{
 				"point":[-1.198748,2.02,-0.8042314],
 				"radius":0.5,
-				"shader":"shaders/diffuse.shader.py",
+				"shader":"shaders/phong.shader.py",
 				"use":true,
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
 					"dif_color":[0.6,0.6,0.6,1],
-					"dif_k":2.3
+					"dif_k":2.3,
+					"cr_col":[0.4,0.5,0.6,1],
+					"spec_color":[1,1,1,1],
+					"glossy":0.5,
+					"kr":0.7
 				}
 			}
 		},
