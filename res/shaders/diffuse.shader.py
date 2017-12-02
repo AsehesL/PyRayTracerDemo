@@ -21,7 +21,7 @@ def main(hit, scene, reflcol, output):
 			inshadow = light.in_shadow(scene, sray)
 		ndl = max(0, Vector3.dot(hit.normal.get_normalized(), ldir))
 		if inshadow == False:
-			col = col + (difk*dcol/3.1415926)* (ndl* light.L(hit, scene))
+			col = col + (difk*dcol/3.1415926)* (ndl*light.G(hit)* light.L(hit, scene)/light.pdf(hit))
 
 	output['result'] = col
 

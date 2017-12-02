@@ -57,9 +57,9 @@ class SimpleTracer(Tracer):
 	def trace(self, ray, scene, epsilon):
 		return SimpleTracer.__trace_recursion(self, ray, scene, epsilon, 0)
 	
-	def shadow_hit(self, ray, distance, epsilon):
+	def shadow_hit(self, ray, epsilon, shadowFilter = None):
 		shadowhit = ShadowHit()
-		return SimpleTracer.__shadow_trace(self, ray, shadowhit, distance, epsilon)
+		return SimpleTracer.__shadow_trace(self, ray, shadowhit, epsilon, shadowFilter)
 
 	def __trace_recursion(self, ray, scene, epsilon, n):
 		hit = RayTracingHit()
@@ -83,12 +83,12 @@ class SimpleTracer(Tracer):
 				result = True
 		return result
 
-	def __shadow_trace(self, ray, shadowhit, distance, epsilon):
+	def __shadow_trace(self, ray, shadowhit, epsilon, shadowFilter):
 		shadowhit.reset()
 		for g in self.gemoetries:
 			if g.shadowhit(ray, shadowhit, epsilon):
-				if distance > 0:
-					if shadowhit.t < distance:
+				if shadowFilter != None:
+					if shadowFilter(shadowhit.t):
 						return True
 				else:
 					return True

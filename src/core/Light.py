@@ -32,7 +32,7 @@ class PointLight(Light):
 
 	def in_shadow(self, scene, ray):
 		ts = Vector3.distance(self.position, ray.origin)
-		return scene.tracer.shadow_hit(ray, ts, 0.00001)
+		return scene.tracer.shadow_hit(ray, 0.00001, lambda t:0<t<ts)
 
 	def L(self, hit, scene):
 		rp = (hit.point - self.position).sqr_magnitude()
@@ -59,7 +59,7 @@ class DirectionalLight(Light):
 		return self.direction
 
 	def in_shadow(self, scene, ray):
-		return scene.tracer.shadow_hit(ray, -1, 0.00001)
+		return scene.tracer.shadow_hit(ray, 0.00001)
 
 	def L(self, hit, scene):
 		return self.ls*self.color
@@ -106,7 +106,7 @@ class AmbientOccluder(Light):
 		return pos.x*self.u + pos.y*self.v+pos.z*self.w
 
 	def in_shadow(self, scene, ray):
-		return scene.tracer.shadow_hit(ray, -1, 0.00001)
+		return scene.tracer.shadow_hit(ray, 0.00001)
 
 	def L(self, hit, scene):
 		self.w = hit.normal
@@ -144,15 +144,17 @@ class AreaLight(Light):
 
 	def in_shadow(self, scene, ray):
 		ts = Vector3.dot(self.sample_point - ray.origin, ray.direction)
-		return scene.tracer.shadow_hit(ray, ts, 0.00001)
+		return scene.tracer.shadow_hit(ray, 0.00001,lambda t:t<ts)
 
 	def L(self, hit, scene):
-		ndl = max(0, Vector3.dot(-1*self.light_normal, self.light_dir))
-		return ndl * self.material.shade(hit, scene, 0, 'em_main')
+		ndl = Vector3.dot(-1*self.light_normal, self.light_dir)
+		if ndl > 0.0:
+			return self.material.shade(hit, scene, 0, 'em_main')
+		return Color.black
 
 
 	def G(self, hit):
-		ndl = max(0, Vector3.dot(-1*self.light_normal, self.light_dir))
+		ndl = Vector3.dot(-1*self.light_normal, self.light_dir)
 		return ndl/((hit.point-self.sample_point).sqr_magnitude())
 
 	def pdf(self, hit):

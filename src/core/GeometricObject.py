@@ -32,7 +32,7 @@ class GeometricObject:
 class Plane(GeometricObject):
 	def __init__(self, shader, point, normal):
 		GeometricObject.__init__(self, shader, point)
-		self.normal = normal
+		self.normal = normal.get_normalized()
 
 	def hit(self, ray, hit, epsilon):
 		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
@@ -45,6 +45,9 @@ class Plane(GeometricObject):
 			return True
 		else:
 			return False
+
+	def get_normal(self, point):
+		return self.normal
 
 	def shadowhit(self, ray, shadowhit, epsilon):
 		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
@@ -63,10 +66,76 @@ class Plane(GeometricObject):
 		s = params["shader"]
 		return Plane(s, pos, n)
 
+class Rectangle(Plane):
+	def __init__(self, shader, point, normal, right, up):
+		Plane.__init__(self, shader, point, normal)
+		self.width_squared = right.sqr_magnitude()
+		self.height_squared = up.sqr_magnitude()
+		self.invArea = 1/(right.magnitude()*up.magnitude())
+		self.right = right
+		self.up = up
+
+	def hit(self, ray, hit, epsilon):
+		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
+		if t <= epsilon:
+			return False
+		if t > hit.t:
+			return False
+		p = ray.origin + t * ray.direction
+		d = p - self.point
+		ddw = Vector3.dot(d, self.right)
+		if ddw < 0.0 or ddw > self.width_squared:
+			return False
+		ddh = Vector3.dot(d, self.up)
+		if ddh < 0.0 or ddh > self.height_squared:
+			return False
+		hit.t = t
+		hit.normal = self.normal
+		hit.point = p
+		return True
+
+	def get_normal(self, point):
+		return self.normal
+
+	def sample(self):
+		sp = self.sampler.sample_unit_square()
+		return self.point+(sp.x*2-1)*self.right+(sp.y*2-1)*self.up
+
+	def pdf(self, hit):
+		return self.invArea
+
+	def shadowhit(self, ray, shadowhit, epsilon):
+		t = Vector3.dot((self.point - ray.origin), self.normal) / (Vector3.dot(ray.direction, self.normal))
+		if t <= epsilon:
+			return False
+		if t > shadowhit.t:
+			return False
+		p = ray.origin + t * ray.direction
+		d = p - self.point
+		ddw = Vector3.dot(d, self.right)
+		if ddw < 0.0 or ddw > self.width_squared:
+			return False
+		ddh = Vector3.dot(d, self.up)
+		if ddh < 0.0 or ddh > self.height_squared:
+			return False
+		shadowhit.t = t
+		return True
+
+	@staticmethod
+	def create(params):
+		pos = Vector3(params["point"][0], params["point"][1], params["point"][2])
+		n = Vector3(params["normal"][0], params["normal"][1], params["normal"][2])
+		r = Vector3(params["right"][0], params["right"][1], params["right"][2])
+		u = Vector3(params["up"][0], params["up"][1], params["up"][2])
+		s = params["shader"]
+		return Rectangle(s, pos, n, r, u)
+
+
 class Sphere(GeometricObject):
 	def __init__(self, shader, point, radius):
 		GeometricObject.__init__(self, shader, point)
 		self.radius = radius
+		self.invArea = 1/(4*math.pi*self.radius*self.radius)
 
 	def hit(self, ray, hit, epsilon):
 		tocenter = ray.origin - self.point
@@ -110,7 +179,7 @@ class Sphere(GeometricObject):
 		return self.point+Vector3(sp.x*self.radius,sp.y*self.radius, sp.z*self.radius)
 
 	def pdf(self, hit):
-		return 1/(4*math.pi*self.radius*self.radius)
+		return self.invArea
 
 	def shadowhit(self, ray, shadowhit, epsilon):
 		tocenter = ray.origin - self.point

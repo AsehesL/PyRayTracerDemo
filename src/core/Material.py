@@ -41,3 +41,6 @@ class Material:
 		if 'result' in self.params['output']:
 			return self.params['output']['result']
 		return Color.error
+
+Material.main_pass = 'main'
+Material.em_pass = 'em_main'

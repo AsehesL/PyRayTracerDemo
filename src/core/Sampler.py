@@ -136,15 +136,15 @@ class HammersleySampler(Sampler):
 		Sampler.__init__(self, numSamples, numSets)
 		for i in range(0, self.num_sets):
 			for j in range(0, self.num_samples):
-				sp = Vector2(j/self.num_samples, Hammersley.__phi(self, j))
+				sp = Vector2(j/self.num_samples, HammersleySampler.__phi(self, j))
 				self.samples.append(sp)
 
 	def __phi(self, j):
 		x = 0.0
 		f = 0.5
-		while j:
+		while int(j)>0:
 			x += f * (j%2)
-			j /= 2
+			j = j/ 2
 			f *= 0.5
 		return x
 
