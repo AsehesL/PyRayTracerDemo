@@ -149,7 +149,7 @@ class AreaLight(Light):
 	def L(self, hit, scene):
 		ndl = Vector3.dot(-1*self.light_normal, self.light_dir)
 		if ndl > 0.0:
-			return self.material.shade(hit, scene, 0, 'em_main')
+			return self.material.shade(hit, scene, 0, Material.em_pass)
 		return Color.black
 
 
@@ -173,6 +173,11 @@ class AreaLight(Light):
 		if 'shadow' in params:
 			shadow = params['shadow'] == 1
 		return AreaLight(shadow, go)
+
+class EnvironmentLight(Light):
+	def __init__(self, shadow, material):
+		Light.__init__(self, shadow)
+		self.material = material
 
 def create_light(ltype, params):
 	if 'use' in params and params['use'] == False:
