@@ -40,9 +40,23 @@ class Camera:
 					y = self.pixelHeight*((self.target.height()-1- j)-0.5*(self.target.height())+sp.y)
 				
 					ray = self.screen_point_to_ray(Vector2(x,y))
-					r += scene.tracer.trace(ray, scene, 0.000001)
+					try:
+						r += scene.tracer.trace(ray, scene, 0.000001)
+					except:
+						raise Exception('渲染错误，当前像素%d,%d'%(i,j))
 				if r != None:
 					self.target.set_pixel(i,j,r/self.sampler.num_samples)
+
+	def render_debug(self, scene, i, j):
+		r = Color.black
+		for n in range(0,self.sampler.num_samples):
+			sp = self.sampler.sample_unit_square()
+			x = self.pixelWidth*(i-0.5*(self.target.width())+sp.x)
+			y = self.pixelHeight*((self.target.height()-1- j)-0.5*(self.target.height())+sp.y)
+				
+			ray = self.screen_point_to_ray(Vector2(x,y))
+			
+			r += scene.tracer.trace(ray, scene, 0.000001)
 
 
 def create_camera(params):

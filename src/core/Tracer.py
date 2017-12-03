@@ -64,7 +64,9 @@ class SimpleTracer(Tracer):
 		hit.depth = depth
 		if SimpleTracer.__trace(self, ray, hit, epsilon):
 			return hit.material.shade(hit, scene)
-		return None
+		if scene.sky != None:
+			return scene.sky.shade(hit, scene)
+		return Color.black
 
 		#return SimpleTracer.__trace_recursion(self, ray, scene, epsilon, 0)
 	

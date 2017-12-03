@@ -13,7 +13,7 @@
 			"up":[0.411,0.809,0.421],
 			"near":0.3,
 			"sampler":"HammersleySampler",
-			"num_samples":8,
+			"num_samples":25,
 			"pixel_width":0.0010,
 			"pixel_height":0.0010
 		}
@@ -119,10 +119,10 @@
 					"am_k":1,
 					"dif_color":[0.6,0.6,0.6,1],
 					"dif_k":2.3,
-					"cr_col":[0.4,0.5,0.6,1],
+					"cr_col":[1,1,1,1],
 					"spec_color":[1,1,1,1],
-					"glossy":0.5,
-					"kr":0.7
+					"glossy":100,
+					"kr":0.73
 				}
 			}
 		},
@@ -131,13 +131,17 @@
 			"params":{
 				"point":[-2.41,2.02,-0.77],
 				"radius":0.5,
-				"shader":"shaders/diffuse.shader.py",
+				"shader":"shaders/phong.shader.py",
 				"use":true,
 				"shader_params":{
 					"am_color":[1,1,1,1],
 					"am_k":1,
 					"dif_color":[0.6,0.6,0.6,1],
-					"dif_k":2.3
+					"dif_k":2.3,
+					"cr_col":[1,1,1,1],
+					"spec_color":[1,1,1,1],
+					"glossy":100,
+					"kr":0.73
 				}
 			}
 		},

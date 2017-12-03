@@ -27,14 +27,14 @@ def main(hit, scene, output):
 				c += (rdwo**glossy)*sepccol
 			col = col + c* (ndl*light.G(hit)* light.L(hit, scene)/light.pdf(hit))
 
-	cr = Color(cr_col[0],cr_col[1],cr_col[2],cr_col[3])
+	#cr = Color(cr_col[0],cr_col[1],cr_col[2],cr_col[3])
 
-	vrefl = Vector3.reflect(wo, hit.normal)
+	#vrefl = Vector3.reflect(wo, hit.normal)
 
-	fr = kr*cr/Vector3.dot(vrefl, hit.normal)
-	reflray = Ray(hit.point, vrefl)
-	traceback = scene.tracer.trace(reflray, scene, 0.000001, hit.depth+1)
-	if traceback:
-		col = col + Vector3.dot(hit.normal, vrefl) * fr * traceback
+	#fr = kr*cr/Vector3.dot(vrefl, hit.normal)
+	#reflray = Ray(hit.point, vrefl)
+	#traceback = scene.tracer.trace(reflray, scene, 0.000001, hit.depth+1)
+	#if traceback:
+	#	col = col + Vector3.dot(hit.normal, vrefl) * fr * traceback
 
 	output['result'] = col
