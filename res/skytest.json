@@ -4,7 +4,7 @@
 		"height":330
 	},
 	"Tracer":{
-		"max_trace":0
+		"max_trace":1
 	},
 	"Camera":{
 		"params":{
@@ -13,7 +13,7 @@
 			"up":[0,1,0],
 			"near":0.3,
 			"sampler":"HammersleySampler",
-			"num_samples":8,
+			"num_samples":2,
 			"pixel_width":0.0010,
 			"pixel_height":0.0010
 		}
@@ -21,7 +21,7 @@
 	"Sky":{
 		"shader":"shaders/sky.shader.py",
 		"shader_params":{
-			"sun_dir":[1.0,0.8,1.0]
+			"sun_dir":[0.321,0.766,-0.557]
 		}
 	},
 	"Ambient":{
@@ -52,7 +52,7 @@
 				"ls":0.3,
 				"direction":[0.321,0.766,-0.557],
 				"shadow":1,
-				"use":false
+				"use":true
 			}
 		},
 		{
@@ -66,6 +66,33 @@
 				"shader_params":{
 					"ce":[1,1,1,1],
 					"ls":0.7
+				}
+			}
+		}
+	],
+	"Gemoetries":[
+		{
+			"type":"Sphere",
+			"params":{
+				"point":[0,1.34,-7.51],
+				"radius":0.5,
+				"shader":"shaders/phong2.shader.py",
+				"use":true,
+				"shader_params":{
+					"am_color":[1,1,1,1],
+					"am_k":1,
+					"dif_color":[0.6,0.6,0.6,1],
+					"dif_k":2.3,
+					"cr_col":[1,1,1,1],
+					"spec_color":[1,1,1,1],
+					"glossy":100,
+					"kr":0.73,
+					"exp":100,
+					"sampler":{
+						"type":"JitteredSampler",
+						"num_samples":225,
+						"exp":100
+					}
 				}
 			}
 		}

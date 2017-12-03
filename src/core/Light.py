@@ -211,10 +211,10 @@ class EnvironmentLight(Light):
 			shadow = params['shadow'] == 1
 		if 'shader' in params:
 			params['shader'] = Res.combine_res_path(params['shader'])
-		mat = Material(params["shader"])
-		if 'shader_params' in params:
-			for p in params["shader_params"]:
-				mat.set_param(p, params["shader_params"][p])
+		mat = Material(params["shader"], params["shader_params"])
+		# if 'shader_params' in params:
+		# 	for p in params["shader_params"]:
+		# 		mat.set_param(p, params["shader_params"][p])
 		return EnvironmentLight(sampler, shadow, mat)
 
 def create_light(ltype, params):

@@ -27,14 +27,29 @@ def main(hit, scene, output):
 				c += (rdwo**glossy)*sepccol
 			col = col + c* (ndl*light.G(hit)* light.L(hit, scene)/light.pdf(hit))
 
-	#cr = Color(cr_col[0],cr_col[1],cr_col[2],cr_col[3])
+	cr = Color(cr_col[0],cr_col[1],cr_col[2],cr_col[3])
 
-	#vrefl = Vector3.reflect(wo, hit.normal)
+	vrefl = Vector3.reflect(wo, hit.normal)
 
-	#fr = kr*cr/Vector3.dot(vrefl, hit.normal)
-	#reflray = Ray(hit.point, vrefl)
-	#traceback = scene.tracer.trace(reflray, scene, 0.000001, hit.depth+1)
-	#if traceback:
-	#	col = col + Vector3.dot(hit.normal, vrefl) * fr * traceback
+	w = vrefl.get_normalized()
+	u = Vector3.cross(Vector3(0.00424,1,0.00764), w)
+	u.normalize()
+	v = Vector3.cross(u, w)
+
+	sp = sampler.sample_hemisphere()
+	wi = sp.x*u+sp.y*v+sp.z*w
+
+	if Vector3.dot(wi, hit.normal) < 0.0:
+		wi = -sp.x*u-sp.y*v-sp.z*w
+
+	phong_lobe = (Vector3.dot(vrefl, wi))**exp
+	pdf = phong_lobe*Vector3.dot(hit.normal, wi)
+
+	fr = phong_lobe*kr*cr
+
+	reflray = Ray(hit.point, wi)
+	traceback = scene.tracer.trace(reflray, scene, 0.000001, hit.depth+1)
+	if traceback:
+		col = col + Vector3.dot(hit.normal, wi) * fr/pdf * traceback
 
 	output['result'] = col
