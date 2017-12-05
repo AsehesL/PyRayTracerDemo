@@ -4,6 +4,16 @@ def lambertian_f(color, k):
 def lambertian_rho(color, k):
 	return k*color
 
+def tir(direction, normal, eta):
+	wo = -1*direction
+	cos_thetai = Vector3.dot(wo, normal)
+	if cos_thetai < 0
+		eta = 1.0 / eta
+	return 1.0-(1.0-cos_thetai*cos_thetai)/(eta*eta)<0.0
+
+def sample_f():
+	
+
 def glossy_specular_f(normal, lightDir, viewDir, color, k):
 	L = Color.black
 	refl = Vector3.reflect(normal, lightDir)

@@ -197,12 +197,14 @@ class Vector3:
 	def reflect(direction, normal):
 		return 2.0 * Vector3.dot(normal, direction)*normal-direction
 
-	# @staticmethod
-	# def refract(direction, normal, eta):
-	# 	cosi = Vector3.dot(normal, direction)
-	# 	cost2 = 1.0 - eta * eta * (1.0 - cosi * cosi)
-	# 	t = -direction*eta+((eta*cosi - normal*math.sqrt(abs(cost2))))
-	# 	return t
+	@staticmethod
+	def refract(direction, normal, eta):
+		cosi = Vector3.dot(-1*direction, normal)
+		cost2 = 1.0 - eta * eta * (1.0 - cosi*cosi)
+		t = eta*direction + ((eta*cosi-math.sqrt(abs(cost2)))*normal)
+		if cost2>0:
+			return t
+		return Vector3(0,0,0)
 
 	@staticmethod
 	def angle(fromvec, tovec):
