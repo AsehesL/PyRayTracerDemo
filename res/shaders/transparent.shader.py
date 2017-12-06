@@ -12,7 +12,7 @@ def tir(direction, normal, eta):
 	return 1.0-(1.0-cos_thetai*cos_thetai)/(eta*eta)<0.0
 
 def sample_f():
-	
+	pass
 
 def glossy_specular_f(normal, lightDir, viewDir, color, k):
 	L = Color.black
