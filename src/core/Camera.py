@@ -4,7 +4,6 @@ from Tracer import *
 from Texture import Texture
 from Sampler import *
 from Scene import *
-from concurrent.futures import ThreadPoolExecutor
 
 class Camera:
 	def __init__(self, position, forward, up, d, pixelWidth, pixelHeight):
@@ -17,7 +16,6 @@ class Camera:
 		self.position = position
 		self.pixelWidth = pixelWidth
 		self.pixelHeight = pixelHeight
-		self.executor = ThreadPoolExecutor(8)
 
 	def screen_point_to_ray(self, point):
 		d = self.r*point.x + self.u*point.y + self.f * self.near
@@ -30,44 +28,24 @@ class Camera:
 		self.target = target
 
 	def render(self, scene, callback):
-		
-		taskResults = []
 		for j in range(0,self.target.height()):
 			progress = j/(self.target.height()-1)
 			if callback != None:
 				callback(progress)
 			for i in range(0,self.target.width()):
-				#r = Color.black
-				
-				taskArgsRay = []
+				r = Color.black
 				for n in range(0,self.sampler.num_samples):
 					sp = self.sampler.sample_unit_square()
 					x = self.pixelWidth*(i-0.5*(self.target.width())+sp.x)
 					y = self.pixelHeight*((self.target.height()-1- j)-0.5*(self.target.height())+sp.y)
 				
 					ray = self.screen_point_to_ray(Vector2(x,y))
-
-					taskArgsRay.append(ray)
-
-				taskResults.append(self.executor.submit(Camera.render_task, scene, i, j, taskArgsRay))
-					#try:
-					#	r += scene.tracer.trace(ray, scene, 0.000001)
-					#except:
-					#	raise Exception('渲染错误，当前像素%d,%d'%(i,j))
-				#if r != None:
-				#	self.target.set_pixel(i,j,r/self.sampler.num_samples)
-		#taskResults = self.executor.map(Camera.__render_task, taskArgsScene, taskArgsI, taskArgsJ, taskArgsRay)
-		for result in taskResults:
-			r = result.result()
-			self.target.set_pixel(r[0],r[1],r[2])
-
-	@staticmethod
-	def render_task(scene, i, j, rays):
-		r = Color.black
-		for ray in rays:
-			r += scene.tracer.trace(ray, scene, 0.000001)
-		r = r/len(rays)
-		return (i,j,r)
+					try:
+						r += scene.tracer.trace(ray, scene, 0.000001)
+					except:
+						raise Exception('渲染错误，当前像素%d,%d'%(i,j))
+				if r != None:
+					self.target.set_pixel(i,j,r/self.sampler.num_samples)
 
 	def render_debug(self, scene, i, j):
 		r = Color.black
