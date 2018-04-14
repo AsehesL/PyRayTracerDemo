@@ -1,4 +1,5 @@
 import os.path
+#import threading
 
 from Color import *
 from Sampler import *
@@ -18,6 +19,7 @@ class Material:
 		else:
 			self.shader = None
 		self.params = {}
+		#self.mutes = threading.Lock()
 		if params != None:
 			for p in params:
 				Material.set_param(self, p, params[p])
@@ -44,14 +46,19 @@ class Material:
 	def shade(self, hit, scene, shadepass='main'):
 		if self.shader == None:
 			return Color.error
-		self.params['hit'] = hit
-		self.params['scene'] = scene
-		self.params['output'] = {}
+		#self.mutes.acquire()
+		params = self.params.copy()
+
+		params['hit'] = hit
+		params['scene'] = scene
+		params['output'] = {}
 		shadercode = generate_shader(self.shader, shadepass)
-		exec(shadercode, self.params)
-		if 'result' in self.params['output']:
-			return self.params['output']['result']
-		return Color.error
+		exec(shadercode, params)
+		col = Color.error
+		if 'result' in params['output'] and params['output']['result'] != None:
+			col = params['output']['result']
+		#self.mutes.release()
+		return col
 
 Material.main_pass = 'main'
 Material.em_pass = 'em_main'

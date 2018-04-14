@@ -27,6 +27,23 @@ class Camera:
 	def set_render_target(self, target):
 		self.target = target
 
+	def render_for_task(self, queue, callback):
+		for j in range(0,self.target.height()):
+			progress = j/(self.target.height()-1)
+			if callback != None:
+				callback(progress)
+			for i in range(0,self.target.width()):
+				rays = []
+				for n in range(0,self.sampler.num_samples):
+					sp = self.sampler.sample_unit_square()
+					x = self.pixelWidth*(i-0.5*(self.target.width())+sp.x)
+					y = self.pixelHeight*((self.target.height()-1- j)-0.5*(self.target.height())+sp.y)
+
+					ray = self.screen_point_to_ray(Vector2(x,y))
+
+					rays.append(ray)
+				queue.put((rays, i, j))
+
 	def render(self, scene, callback):
 		for j in range(0,self.target.height()):
 			progress = j/(self.target.height()-1)
