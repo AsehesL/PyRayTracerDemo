@@ -92,11 +92,11 @@ class RenderManager:
 			# 		dt = cq.get(True)
 			# 		self.tex.set_pixel(dt[0], dt[1], dt[2])
 
-			for cols in return_dict.values():
-				for c in cols:
-					self.tex.set_pixel(c[0], c[1], c[2])
+			# for cols in return_dict.values():
+			# 	for c in cols:
+			# 		self.tex.set_pixel(c[0], c[1], c[2])
 			
-			self.tex.save(outputPath)
+			# self.tex.save(outputPath)
 
 		except:
 			print('渲染失败，请检查文件：%s'%cfgpath)
@@ -118,18 +118,22 @@ class RenderManager:
 
 		colors = []
 
+		#colordict[pid] = []
+		
+		#if colordict.has_key(pid) == False:
+		print("Key:%d"%(pid))
+		colordict[7] = 5
+
+		scene = Scene()
+		if scene.init_scene(cfgpath) == False:
+			print("Scene Init Faild")
+			return
+
 		while taskqueue.empty() == False:
 			dt = taskqueue.get(True)
-			print("SceneInit:PID:%d,X:%d,Y:%d,W:%d,H:%d"%(pid,dt[0],dt[1],dt[2],dt[3]))
-			scene = Scene()
-			if scene.init_scene(cfgpath) == False:
-				print("Scene Init Faild")
-				return
-			print("Scene Render Begin")
+			print("Scene Render Begin:PID:%d,X:%d,Y:%d,W:%d,H:%d"%(pid,dt[0],dt[1],dt[2],dt[3]))
 			scene.render_range(dt[0],dt[1],dt[2],dt[3],dt[4],dt[5], colors)
 			print("Range Finish")
-
-		colordict[pid] = colors
 
 			# for ray in dt[0]:
 			# 	r = Color.black
