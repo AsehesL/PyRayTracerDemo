@@ -9,9 +9,9 @@ from Camera import *
 from Light import *
 from Sky import *
 
-# def log_progress(progress):
-# 	pgs = int(progress*100)
-# 	print('当前渲染进度：%d%%'%(pgs)) 
+def log_progress(progress):
+	pgs = int(progress*100)
+	print('当前渲染进度：%d%%'%(pgs)) 
 
 class Scene:
 	def __init__(self):
@@ -62,6 +62,14 @@ class Scene:
 					if light == None:
 						continue
 					self.lights.append(light)
+
+			#print("加载摄像机")		
+			if 'Camera' in scenejson:
+				camPamras = scenejson["Camera"]
+				self.camera = create_camera(camPamras["params"])
+				#cfg = scenejson["Result"]
+				#self.tex = Texture(cfg["width"], cfg["height"])
+				#self.camera.set_render_target(self.tex)
 			
 		except:
 			#print('加载场景失败，请检查文件：%s'%scenePath)
@@ -75,6 +83,9 @@ class Scene:
 		self.camera.render(self, log_progress)
 		print("渲染结束")
 		self.tex.save(outputPath)
+
+	def render_range(self, beginx, beginy, width, height, pwidth, pheight, colors):
+		self.camera.render_range(self, beginx, beginy, width, height, pwidth, pheight, colors)
 
 	def render_debug(self, i, j):
 		print("开始渲染像素：(%d,%d)"%(i,j))
