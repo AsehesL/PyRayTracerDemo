@@ -64,7 +64,7 @@ class Camera:
 				if r != None:
 					self.target.set_pixel(i,j,r/self.sampler.num_samples)
 
-	def render_range(self, scene, beginx, beginy, width, height, pwidth, pheight, colors):
+	def render_range(self, scene, beginx, beginy, width, height, pwidth, pheight, resultqueue):
 		for j in range(beginy, beginy + height):
 			# progress = j/(self.target.height()-1)
 			# if callback != None:
@@ -84,8 +84,10 @@ class Camera:
 				if r != None:
 				#	#self.target.set_pixel(i,j,r/self.sampler.num_samples)
 					#print("X:%d,Y:%d,color:%s"%(i,j,str(r)))
-					colors.append((i, j, r))
+					#colors.append((i, j, r.r, r.g, r.b, r.a))
 					#queue.put((i, j, r))
+					resultqueue.put_nowait((i,j,r.r,r.g,r.b,r.a))
+					#return
 
 	def render_debug(self, scene, i, j):
 		r = Color.black

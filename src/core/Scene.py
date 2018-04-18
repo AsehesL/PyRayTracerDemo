@@ -84,8 +84,8 @@ class Scene:
 		print("渲染结束")
 		self.tex.save(outputPath)
 
-	def render_range(self, beginx, beginy, width, height, pwidth, pheight, colors):
-		self.camera.render_range(self, beginx, beginy, width, height, pwidth, pheight, colors)
+	def render_range(self, beginx, beginy, width, height, pwidth, pheight, resultqueue):
+		self.camera.render_range(self, beginx, beginy, width, height, pwidth, pheight, resultqueue)
 
 	def render_debug(self, i, j):
 		print("开始渲染像素：(%d,%d)"%(i,j))
