@@ -108,7 +108,7 @@ class RenderManager:
 			#with Manager() as manager:
 			#mycolors = []
 
-			for i in range(0, 5):
+			for i in range(0, 7):
 				#mycolorlist = manager.list()
 				#colorqueue = Queue()
 				pw = Process(target = RenderManager.render_task, args=(cfgpath, i, taskqueue, resultqueue))

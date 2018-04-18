@@ -7,7 +7,7 @@ from RenderManager import RenderManager
 
 if __name__ == "__main__":
 	mgr = RenderManager()
-	mgr.init('../res/refltest.json', '../outputs/refltest')
+	mgr.init('../res/skytest.json', '../outputs/skytest')
 
 	# scene = Scene()
 	# if scene.init_scene('../res/skytest.json') == True:
